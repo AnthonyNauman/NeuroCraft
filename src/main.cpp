@@ -1,7 +1,4 @@
-// #include <GLFW/glfw3.h>
-#include <memory>
 #include "app.hpp"
-
 
 int main(void)
 {

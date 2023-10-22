@@ -8,16 +8,18 @@ set(PROJ_VERSION 0.1.0.0)
 add_compile_definitions(PROJECT_VERSION="${PROJ_VERSION}")
 
 project(NeuroCraft VERSION ${PROJ_VERSION} LANGUAGES CXX)
-add_compile_definitions(PROJECT_NAME="${PROJECT_NAME} ")
+add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 
 set(NEURO_CRAFT_PUBLIC_INCLUDES 
         src/app.hpp
         src/logger.hpp
+        src/ui/main_window.hpp
 )
 
 set(NEURO_CRAFT_PUBLIC_SOURCES
         src/app.cpp
+        src/ui/main_window.cpp
 )
 
 add_library(neuro_craft_static STATIC 

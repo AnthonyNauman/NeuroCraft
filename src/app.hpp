@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include <memory>
-#include <GLFW/glfw3.h> 
-#define GL_SILENCE_DEPRECATION
+
+#include "ui/main_window.hpp"
 
 namespace nc {
 
@@ -10,16 +10,15 @@ namespace nc {
     {
     public:
         App();
-        ~App();
+        ~App() {}
         App(const App&) = delete;
         App(App&&) = delete;
         App& operator=(const App&) = delete;
         App& operator=(App&&) = delete;
 
         int exec();
-        void update();
-
 
     private:
+        std::unique_ptr<MainWindow>     _mainWindow;
     };
 }
