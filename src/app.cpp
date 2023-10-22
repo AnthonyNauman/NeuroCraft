@@ -3,6 +3,11 @@
 #include "utils.hpp"
 #include "logger.hpp"
 #include "../libs/glad/include/glad/glad.h"
+#include <imgui.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
+
+
 namespace nc {
 
     App::App()
@@ -57,20 +62,20 @@ namespace nc {
             __logCritical("Can't init Glad"); 
         }
         // Setup Dear ImGui context
-        // IMGUI_CHECKVERSION();
-        // ImGui::CreateContext();
-        // ImGuiIO& io = ImGui::GetIO(); 
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); 
         //! @note Добавить флаг докинга
-        // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-        // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
         // Setup Dear ImGui style
-        // ImGui::StyleColorsDark();
+        ImGui::StyleColorsDark();
         // ImGui::StyleColorsLight();
 
         // Setup Platform/Renderer backends
-        // ImGui_ImplGlfw_InitForOpenGL(_glWindow, true);
-        // ImGui_ImplOpenGL3_Init(_glslVersion);
+        ImGui_ImplGlfw_InitForOpenGL(_glWindow, true);
+        ImGui_ImplOpenGL3_Init(_glslVersion);
 
 
         // Load Fonts
@@ -100,32 +105,32 @@ namespace nc {
             glfwPollEvents() ;
 
             // Start the Dear ImGui frame
-            // ImGui_ImplOpenGL3_NewFrame();
-            // ImGui_ImplGlfw_NewFrame();
-            // ImGui::NewFrame();
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
             
 
 
             //! @todo MyStaff
-            // ImGui::Begin("test");
-            // ImGui::Button("test");
-            // ImGui::End();
+            ImGui::Begin("test");
+            ImGui::Button("test");
+            ImGui::End();
 
             // Rendering
-            // ImGui::Render();
-            // int display_w, display_h;
-            // glfwGetFramebufferSize(window, &display_w, &display_h);
-            // glViewport(0, 0, display_w, display_h);
+            ImGui::Render();
+            int display_w, display_h;
+            glfwGetFramebufferSize(_glWindow, &display_w, &display_h);
+            glViewport(0, 0, display_w, display_h);
             glClearColor(0,0.5,0.5,1);
             glClear(GL_COLOR_BUFFER_BIT);
-            // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             glfwSwapBuffers(_glWindow);
         }
         // Cleanup
-        // ImGui_ImplOpenGL3_Shutdown();
-        // ImGui_ImplGlfw_Shutdown();
-        // ImGui::DestroyContext();
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
 
         glfwDestroyWindow(_glWindow);
         glfwTerminate();
