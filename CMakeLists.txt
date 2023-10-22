@@ -32,9 +32,11 @@ add_executable(${PROJECT_NAME} src/main.cpp )
 
 add_subdirectory(libs/glfw ${CMAKE_CURRENT_BINARY_DIR}/libs/glfw)
 add_subdirectory(libs/spdlog ${CMAKE_CURRENT_BINARY_DIR}/libs/spdlog)
+add_subdirectory(libs/glad ${CMAKE_CURRENT_BINARY_DIR}/libs/glad)
 target_link_libraries(neuro_craft_static PUBLIC 
             glfw
             spdlog
+            glad
 )
 
 

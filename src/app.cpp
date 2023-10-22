@@ -1,6 +1,8 @@
 #include "app.hpp"
+#include "GLFW/glfw3.h"
 #include "utils.hpp"
 #include "logger.hpp"
+#include "../libs/glad/include/glad/glad.h"
 namespace nc {
 
     App::App()
@@ -50,7 +52,10 @@ namespace nc {
         /* Make the window's context current */
         glfwMakeContextCurrent(_glWindow );
         // Create window with graphics context
-
+        if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        {
+            __logCritical("Can't init Glad"); 
+        }
         // Setup Dear ImGui context
         // IMGUI_CHECKVERSION();
         // ImGui::CreateContext();
@@ -111,8 +116,8 @@ namespace nc {
             // int display_w, display_h;
             // glfwGetFramebufferSize(window, &display_w, &display_h);
             // glViewport(0, 0, display_w, display_h);
-            // glClearColor(0,0.5,0.5,1);
-            // glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(0,0.5,0.5,1);
+            glClear(GL_COLOR_BUFFER_BIT);
             // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             glfwSwapBuffers(_glWindow);
