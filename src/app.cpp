@@ -1,10 +1,11 @@
 #include "app.hpp"
 #include "utils.hpp"
-
+#include "logger.hpp"
 namespace nc {
 
     App::App()
     {
+        __logInfo("App created");
         
     }
     

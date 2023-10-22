@@ -13,6 +13,7 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME} ")
 
 set(NEURO_CRAFT_PUBLIC_INCLUDES 
         src/app.hpp
+        src/logger.hpp
 )
 
 set(NEURO_CRAFT_PUBLIC_SOURCES
@@ -30,8 +31,10 @@ add_library(neuro_craft_static STATIC
 add_executable(${PROJECT_NAME} src/main.cpp )
 
 add_subdirectory(libs/glfw ${CMAKE_CURRENT_BINARY_DIR}/libs/glfw)
+add_subdirectory(libs/spdlog ${CMAKE_CURRENT_BINARY_DIR}/libs/spdlog)
 target_link_libraries(neuro_craft_static PUBLIC 
             glfw
+            spdlog
 )
 
 
