@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 
 
@@ -6,7 +7,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3_loader.h>
-
+#include "../graphics/shader.hpp"
 #include <GLFW/glfw3.h> 
 #define GL_SILENCE_DEPRECATION
 
@@ -34,7 +35,7 @@ namespace nc {
         bool shouldClose() {return glfwWindowShouldClose(_glWindow);}
     private:
         void _setGLSLVersion();
-
+        Shader* _shader1;
     private:
         GLFWwindow*         _glWindow;
         const char*         _glslVersion;

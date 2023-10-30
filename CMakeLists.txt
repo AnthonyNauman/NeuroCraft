@@ -50,8 +50,25 @@ add_library(imgui_static STATIC
     ${IMGUI_INCLUDES}
     ${IMGUI_SOURCES}
 )
+
+set(GRAPHICS_INCLUDES
+        src/graphics/shader.hpp
+
+)
+set(GRAPHICS_SOURCES
+        src/graphics/shader.cpp
+
+)
+add_library(graphics_static STATIC
+        ${GRAPHICS_INCLUDES}
+        ${GRAPHICS_SOURCES}
+)
+
 target_include_directories(imgui_static PUBLIC libs)
 target_include_directories(imgui_static PUBLIC libs/imgui)
+target_include_directories(graphics_static PUBLIC libs)
+target_include_directories(graphics_static PUBLIC libs/imgui)
+target_include_directories(graphics_static PUBLIC libs/spdlog)
 
 add_executable(${PROJECT_NAME} src/main.cpp )
 
@@ -59,11 +76,13 @@ add_subdirectory(libs/glfw ${CMAKE_CURRENT_BINARY_DIR}/libs/glfw)
 add_subdirectory(libs/spdlog ${CMAKE_CURRENT_BINARY_DIR}/libs/spdlog)
 add_subdirectory(libs/glad ${CMAKE_CURRENT_BINARY_DIR}/libs/glad)
 target_link_libraries(imgui_static PRIVATE glad glfw)
+target_link_libraries(graphics_static PRIVATE glad glfw spdlog)
 target_link_libraries(neuro_craft_static PUBLIC 
             glfw
             spdlog
             glad
             imgui_static
+            graphics_static
 )
 
 

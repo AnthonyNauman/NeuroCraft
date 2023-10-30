@@ -1,9 +1,12 @@
 #include "main_window.hpp"
+#include "iostream"
 
 #include "../utils.hpp"
 #include "../logger.hpp"
 #include "../libs/glad/include/glad/glad.h"
 #include "GLFW/glfw3.h"
+#include <memory>
+#include <vector>
 
 namespace nc {
 
@@ -18,7 +21,15 @@ namespace nc {
         0.0f, 1.0f, 1.0f
     };
     
-    const char* vertex_shader =
+    GLfloat* color2;
+    
+    float vertices[] = {
+        // positions         // colors
+         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+    };
+    const char* vertex_shader=
         "#version 460\n"
         "layout(location = 0) in vec3 vertex_position;"
         "layout(location = 1) in vec3 vertex_color;"
@@ -28,21 +39,20 @@ namespace nc {
         "   gl_Position = vec4(vertex_position, 1.0);"
         "}";
 
-    const char* fragment_shader =
-        "#version 460\n"
+    const char* fragment_shader=
+        "#version 460 core\n"
         "in vec3 color;"
         "out vec4 frag_color;"
         "void main() {"
         "   frag_color = vec4(color, 1.0);"
         "}";
 
-    GLuint shader_program;
+    GLuint _programId;
     GLuint vao;
     
 
     int MainWindow::init()
     {
-        
         if (!glfwInit())
             return -1;
         
@@ -78,46 +88,51 @@ namespace nc {
         // Setup Platform/Renderer backends
         ImGui_ImplGlfw_InitForOpenGL(_glWindow, true);
         ImGui_ImplOpenGL3_Init(_glslVersion);
+        std::string vertShaderStr= 
+        "#version 460 core\n"
+        "layout(location = 0) in vec3 vertex_position;"
+        "layout(location = 1) in vec3 vertex_color;"
+        "out vec3 color;"
+        "void main() {"
+        "   color = vertex_color;"
+        "   gl_Position = vec4(vertex_position, 1.0);"
+        "}";
+        
+        std::string fragShaderStr = 
+        "#version 460 core\n"
+        "in vec3 color;"
+        "out vec4 frag_color;"
+        "void main() {"
+        "   frag_color = vec4(color, 1.0);"
+        "}";
 
+        std::vector<float> vecVert= {
 
-        // Load Fonts
-        // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
-        // - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
-        // - If the file cannot be loaded, the function will return a nullptr. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
-        // - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
-        // - Use '#define IMGUI_ENABLE_FREETYPE' in your imconfig file to use Freetype for higher quality font rendering.
-        // - Read 'docs/FONTS.md' for more instructions and details.
-        // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-        // - Our Emscripten build process allows embedding fonts to be accessible at runtime from the "fonts/" folder. See Makefile.emscripten for details.
-        //io.Fonts->AddFontDefault();
-        //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
-        //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-        //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-        //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-        //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
-        //IM_ASSERT(font != nullptr);
-        glfwSetFramebufferSizeCallback(_glWindow, [](GLFWwindow* w, int width, int height)
-                                       {
-                                            glViewport(0, 0, width, height);
-                                       });    
+        // positions         // colors
+         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+    };
 
-
+        const char* vShader = vertShaderStr.c_str();
+        const char* fShader = fragShaderStr.c_str();
+        // _shader1 = new Shader(vertex_shader, fragment_shader, point, color);
         GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vs, 1, &vertex_shader, nullptr);
+    glShaderSource(vs, 1, &vShader,nullptr);
         glCompileShader(vs);
 
         GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fs, 1, &fragment_shader, nullptr);
+    glShaderSource(fs, 1, &fShader, nullptr);
         glCompileShader(fs);
 
-        shader_program = glCreateProgram();
-        glAttachShader(shader_program, vs);
-        glAttachShader(shader_program, fs);
-        glLinkProgram(shader_program);
+        _programId = glCreateProgram();
+        glAttachShader(_programId, vs);
+        glAttachShader(_programId, fs);
+        glLinkProgram(_programId);
 
         glDeleteShader(vs);
         glDeleteShader(fs);
-
+    //
         GLuint points_vbo = 0;
         glGenBuffers(1, &points_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
@@ -126,7 +141,7 @@ namespace nc {
         glGenBuffers(1, &colors_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
         glBufferData(GL_ARRAY_BUFFER, sizeof(color), color, GL_STATIC_DRAW);
-    
+
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
         
@@ -144,7 +159,9 @@ namespace nc {
     {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(shader_program);
+        // _shader1->useProgram();
+        // glUniform1f(glGetUniformLocation(_shader1->programId(), "someUniform"), 1.0f);
+        glUseProgram(_programId);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
