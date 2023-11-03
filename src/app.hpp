@@ -8,16 +8,22 @@ namespace nc {
 
     class App
     {
-    public:
+    private:
         App();
+    public:
+        static std::shared_ptr<App> getInstance()
+        {
+            static std::shared_ptr<App> appPtr {new App()};
+            return appPtr;
+        }
         ~App() {}
-        App(const App&) = delete;
-        App(App&&) = delete;
-        App& operator=(const App&) = delete;
-        App& operator=(App&&) = delete;
 
         int exec();
 
+        App(App&&) = delete;
+        App(const App&) = delete;
+        App& operator=(const App&) = delete;
+        App& operator=(App&&) = delete;
     private:
         std::unique_ptr<MainWindow>     _mainWindow;
     };

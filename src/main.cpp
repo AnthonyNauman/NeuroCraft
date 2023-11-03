@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    auto app = std::make_unique<nc::App>();
+    auto app = nc::App::getInstance();
 
     return app->exec();
 }
