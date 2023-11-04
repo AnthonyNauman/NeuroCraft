@@ -17,15 +17,16 @@ namespace nc{
 
 class Shader{
 public:
-    Shader(const char* vertexShader, const char* fragmentShader, GLfloat* point, GLfloat* color);
-    // Shader(const std::vector<float>& vShader, const std::vector<float>& fShader, const std::vector<float>& vertices);
+    Shader(const char* vertexPath, const char* fragmentPath);
     ~Shader(){}
     void useProgram();
-    const GLuint programId() {return _programId;}
+    const GLuint program() {return _programId;}
 
 private:
     GLuint _programId;
-    GLuint _vertexShader;
-    GLuint _fragmentShader;
+    GLuint _vs;
+    GLuint _fs;
+
+
 };
 }

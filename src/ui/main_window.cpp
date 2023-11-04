@@ -5,6 +5,7 @@
 #include "../logger.hpp"
 #include "../libs/glad/include/glad/glad.h"
 #include "GLFW/glfw3.h"
+#include <filesystem>
 #include <memory>
 #include <vector>
 
@@ -12,7 +13,7 @@ namespace nc {
 
     GLfloat point[] = {
         0.0f,   0.5f,   0.0f,
-        0.5f,   -0.5f,  0.0f,
+        0.8f,   -0.3f,  0.0f,
         -0.5f,  -0.5f,  0.0f
     }; 
     GLfloat color[] = {
@@ -21,33 +22,17 @@ namespace nc {
         0.0f, 1.0f, 1.0f
     };
     
-    GLfloat* color2;
+    // GLfloat* color2;
     
-    float vertices[] = {
-        // positions         // colors
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
-    };
-    const char* vertex_shader=
-        "#version 460\n"
-        "layout(location = 0) in vec3 vertex_position;"
-        "layout(location = 1) in vec3 vertex_color;"
-        "out vec3 color;"
-        "void main() {"
-        "   color = vertex_color;"
-        "   gl_Position = vec4(vertex_position, 1.0);"
-        "}";
+    // float vertices[] = {
+    //     // positions         // colors
+    //      0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+    //     -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+    //      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+    // };
 
-    const char* fragment_shader=
-        "#version 460 core\n"
-        "in vec3 color;"
-        "out vec4 frag_color;"
-        "void main() {"
-        "   frag_color = vec4(color, 1.0);"
-        "}";
 
-    GLuint _programId;
+
     GLuint vao;
     
 
@@ -71,7 +56,7 @@ namespace nc {
         // Create window with graphics context
         if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
-            __logCritical("Can't init Glad"); 
+            NC_LOG_CRIT("Can't init Glad"); 
         }
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
@@ -79,60 +64,19 @@ namespace nc {
         ImGuiIO& io = ImGui::GetIO(); 
         //! @note Добавить флаг докинга
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
-        // ImGui::StyleColorsLight();
 
         // Setup Platform/Renderer backends
         ImGui_ImplGlfw_InitForOpenGL(_glWindow, true);
         ImGui_ImplOpenGL3_Init(_glslVersion);
-        std::string vertShaderStr= 
-        "#version 460 core\n"
-        "layout(location = 0) in vec3 vertex_position;"
-        "layout(location = 1) in vec3 vertex_color;"
-        "out vec3 color;"
-        "void main() {"
-        "   color = vertex_color;"
-        "   gl_Position = vec4(vertex_position, 1.0);"
-        "}";
-        
-        std::string fragShaderStr = 
-        "#version 460 core\n"
-        "in vec3 color;"
-        "out vec4 frag_color;"
-        "void main() {"
-        "   frag_color = vec4(color, 1.0);"
-        "}";
 
-        std::vector<float> vecVert= {
 
-        // positions         // colors
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
-    };
+        const char vPath[] = "../res/testVertex.glsl";
+        const char fPath[] = "../res/testFrag.glsl";
+        _shader1 = new Shader(vPath, fPath);
 
-        const char* vShader = vertShaderStr.c_str();
-        const char* fShader = fragShaderStr.c_str();
-        // _shader1 = new Shader(vertex_shader, fragment_shader, point, color);
-        GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &vShader,nullptr);
-        glCompileShader(vs);
-
-        GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &fShader, nullptr);
-        glCompileShader(fs);
-
-        _programId = glCreateProgram();
-        glAttachShader(_programId, vs);
-        glAttachShader(_programId, fs);
-        glLinkProgram(_programId);
-
-        glDeleteShader(vs);
-        glDeleteShader(fs);
-    //
         GLuint points_vbo = 0;
         glGenBuffers(1, &points_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
@@ -159,11 +103,12 @@ namespace nc {
     {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        // _shader1->useProgram();
-        // glUniform1f(glGetUniformLocation(_shader1->programId(), "someUniform"), 1.0f);
-        glUseProgram(_programId);
+        _shader1->useProgram();
+        // glUniform1f(glGetUniformLocation(_shader1->program(), "someUniform"), 1.0f);
+        // glUseProgram(_programId);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(0);
 
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.

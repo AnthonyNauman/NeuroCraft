@@ -4,14 +4,15 @@
 // #define DEBUG
 namespace nc {
 #ifndef DEBUG
-#define __logInfo(...) spdlog::info(__VA_ARGS__)
-#define __logWarn(...) spdlog::warn(__VA_ARGS__)
-#define __logError(...) spdlog::error(__VA_ARGS__)
-#define __logCritical(...) spdlog::critical(__VA_ARGS__)
+
+#define NC_LOG_INFO(...) spdlog::info(__VA_ARGS__) 
+#define NC_LOG_WARN(...) spdlog::warn(__VA_ARGS__)
+#define NC_LOG_ERROR(...) spdlog::error(__VA_ARGS__)
+#define NC_LOG_CRIT(...) spdlog::critical(__VA_ARGS__)
 #else
-#define __logInfo(...) 
-#define __logWarn(...) 
-#define __logError(...) 
-#define __logCritical(...)
+#define NC_LOG_INFO(...) 
+#define NC_LOG_WARN(...) 
+#define NC_LOG_ERROR(...) 
+#define NC_LOG_CRIT(...)
 #endif // !DEBUG
 }

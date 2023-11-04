@@ -6,7 +6,7 @@ namespace nc {
 
     App::App()
     {
-        __logInfo("App created");
+        NC_LOG_INFO("App created");
     }
     
     int App::exec()
@@ -17,7 +17,7 @@ namespace nc {
         _mainWindow.reset(new MainWindow(1600, 800, projName));
         int errorCode = _mainWindow->init();
         if(errorCode) {
-            __logCritical("Cant init main window!");
+            NC_LOG_ERROR("Cant init main window!");
             return -1;
         }
 
