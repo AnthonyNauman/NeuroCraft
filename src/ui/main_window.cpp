@@ -22,8 +22,6 @@ namespace nc {
         0.0f, 1.0f, 1.0f
     };
     
-    // GLfloat* color2;
-    
     // float vertices[] = {
     //     // positions         // colors
     //      0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
@@ -31,10 +29,7 @@ namespace nc {
     //      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
     // };
 
-
-
     GLuint vao;
-    
 
     int MainWindow::init()
     {
@@ -103,18 +98,15 @@ namespace nc {
     {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        
         _shader1->useProgram();
-        // glUniform1f(glGetUniformLocation(_shader1->program(), "someUniform"), 1.0f);
-        // glUseProgram(_programId);
+        _shader1->useUniform();
+
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
 
         // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents() ;
 
         // Start the Dear ImGui frame
@@ -131,11 +123,6 @@ namespace nc {
 
         // Rendering
         ImGui::Render();
-        int display_w, display_h;
-        // glfwGetFramebufferSize(_glWindow, &display_w, &display_h);
-        // glViewport(0, 0, display_w, display_h);
-        // glClearColor(0,0.5,0.5,1);
-        // glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(_glWindow);

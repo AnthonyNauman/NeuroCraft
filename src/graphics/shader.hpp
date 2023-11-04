@@ -21,8 +21,9 @@ public:
     ~Shader(){}
     void useProgram();
     const GLuint program() {return _programId;}
-
+    void useUniform();
 private:
+    
     GLuint _programId;
     GLuint _vs;
     GLuint _fs;
