@@ -15,11 +15,13 @@ set(NEURO_CRAFT_PUBLIC_INCLUDES
         src/app.hpp
         src/logger.hpp
         src/ui/main_window.hpp
+        src/ui/camera.hpp
 )
 
 set(NEURO_CRAFT_PUBLIC_SOURCES
         src/app.cpp
         src/ui/main_window.cpp
+        src/ui/camera.cpp
 )
 
 add_library(neuro_craft_static STATIC 
@@ -69,20 +71,23 @@ target_include_directories(imgui_static PUBLIC libs/imgui)
 target_include_directories(graphics_static PUBLIC libs)
 target_include_directories(graphics_static PUBLIC libs/imgui)
 target_include_directories(graphics_static PUBLIC libs/spdlog)
+target_include_directories(graphics_static PUBLIC libs/glm)
 
 add_executable(${PROJECT_NAME} src/main.cpp )
 
 add_subdirectory(libs/glfw ${CMAKE_CURRENT_BINARY_DIR}/libs/glfw)
 add_subdirectory(libs/spdlog ${CMAKE_CURRENT_BINARY_DIR}/libs/spdlog)
 add_subdirectory(libs/glad ${CMAKE_CURRENT_BINARY_DIR}/libs/glad)
+add_subdirectory(libs/glm ${CMAKE_CURRENT_BINARY_DIR}/libs/glm)
 target_link_libraries(imgui_static PRIVATE glad glfw)
-target_link_libraries(graphics_static PRIVATE glad glfw spdlog)
+target_link_libraries(graphics_static PRIVATE glad glfw spdlog glm)
 target_link_libraries(neuro_craft_static PUBLIC 
             glfw
             spdlog
             glad
             imgui_static
             graphics_static
+            glm
 )
 
 

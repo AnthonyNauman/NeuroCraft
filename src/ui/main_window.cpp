@@ -1,4 +1,7 @@
 #include "main_window.hpp"
+#include "camera.hpp"
+#include "glm/glm/ext/vector_float3.hpp"
+#include "imgui.h"
 #include "iostream"
 
 #include "../utils.hpp"
@@ -28,6 +31,9 @@ namespace nc {
     //     -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
     //      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
     // };
+    float camPos[] = {0.f, 0.f, 1.f};
+    float camRot[] = {0.f, 0.f, 0.f};
+    bool bPerspectiveCamera = false;
 
     GLuint vao;
 
@@ -68,8 +74,8 @@ namespace nc {
         ImGui_ImplOpenGL3_Init(_glslVersion);
 
 
-        const char vPath[] = "../res/testVertex.glsl";
-        const char fPath[] = "../res/testFrag.glsl";
+        const char vPath[] = "../res/m_vertex.glsl";
+        const char fPath[] = "../res/m_frag.glsl";
         _shader1 = new Shader(vPath, fPath);
 
         GLuint points_vbo = 0;
@@ -100,14 +106,6 @@ namespace nc {
         glClear(GL_COLOR_BUFFER_BIT);
         
         _shader1->useProgram();
-        _shader1->useUniform();
-
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0);
-
-        // Poll and handle events (inputs, window resize, etc.)
-        glfwPollEvents() ;
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
@@ -118,8 +116,23 @@ namespace nc {
 
         //! @todo MyStaff
         ImGui::Begin("test");
-        ImGui::Button("test");
+        ImGui::SliderFloat3("Camera position", camPos, -10.f, 10.f);
+        ImGui::SliderFloat3("Camera rotation", camRot, 0.f, 360.f);
+        ImGui::Checkbox("Perspective", &bPerspectiveCamera);
+        
+        _camera.setPosition(glm::vec3(camPos[0], camPos[1], camPos[2]));
+        _camera.setRotation(glm::vec3(camRot[0],camRot[1],camRot[2]));
+        _camera.setProjectionMode(bPerspectiveCamera ? Camera::Projection::Perspective : Camera::Projection::Orthographic);
+
+        _shader1->setUniformMat4fv("viewProjMat", _camera.camViewMatrix());
         ImGui::End();
+
+        glBindVertexArray(vao);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(0);
+
+        // Poll and handle events (inputs, window resize, etc.)
+        glfwPollEvents() ;
 
         // Rendering
         ImGui::Render();

@@ -8,6 +8,8 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3_loader.h>
 
+ #include <glm/glm/ext/matrix_float4x4.hpp>
+
 #include <GLFW/glfw3.h> 
 #include <vector>
 #define GL_SILENCE_DEPRECATION
@@ -21,6 +23,7 @@ public:
     ~Shader(){}
     void useProgram();
     const GLuint program() {return _programId;}
+    void setUniformMat4fv(const char* name, const glm::mat4& mat);
     void useUniform();
 private:
     

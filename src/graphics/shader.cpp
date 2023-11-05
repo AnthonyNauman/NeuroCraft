@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
+#include <glm/glm/gtc/type_ptr.hpp>
 
 
 
@@ -75,6 +75,11 @@ namespace nc {
     void Shader::useProgram()
     {
         glUseProgram(_programId);
+    }
+
+    void Shader::setUniformMat4fv(const char* name, const glm::mat4& mat)
+    {
+        glUniformMatrix4fv(glGetUniformLocation(_programId, name),1, GL_FALSE, glm::value_ptr(mat));
     }
 
     void Shader::useUniform()

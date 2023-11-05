@@ -8,6 +8,11 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3_loader.h>
 #include "../graphics/shader.hpp"
+
+#include "camera.hpp"
+
+
+
 #include <GLFW/glfw3.h> 
 #define GL_SILENCE_DEPRECATION
 
@@ -21,6 +26,7 @@ namespace nc {
             :_windowName(wName)
             ,_width(w)
             ,_height(h)
+            ,_camera()
             {}
         
         MainWindow(const MainWindow&) = delete;
@@ -42,5 +48,7 @@ namespace nc {
         const std::string   _windowName;
         size_t              _width; 
         size_t              _height; 
+
+        Camera              _camera;
     };
 }
