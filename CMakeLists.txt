@@ -16,12 +16,14 @@ set(NEURO_CRAFT_PUBLIC_INCLUDES
         src/logger.hpp
         src/ui/main_window.hpp
         src/ui/camera.hpp
+        src/managers/render_manager.hpp
 )
 
 set(NEURO_CRAFT_PUBLIC_SOURCES
         src/app.cpp
         src/ui/main_window.cpp
         src/ui/camera.cpp
+        src/managers/render_manager.cpp
 )
 
 add_library(neuro_craft_static STATIC 
@@ -55,10 +57,16 @@ add_library(imgui_static STATIC
 
 set(GRAPHICS_INCLUDES
         src/graphics/shader.hpp
+        src/graphics/mesh.hpp
+        src/graphics/render_commands.hpp
+        src/graphics/frame_buffer.hpp
 
 )
 set(GRAPHICS_SOURCES
         src/graphics/shader.cpp
+        src/graphics/mesh.cpp
+        src/graphics/render_commands.cpp
+        src/graphics/frame_buffer.cpp
 
 )
 add_library(graphics_static STATIC

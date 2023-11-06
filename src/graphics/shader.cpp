@@ -7,7 +7,7 @@
 
 
 
-namespace nc {
+namespace nc::graphics{
 
     Shader::Shader(const char* vPath, const char* fPath)
     {
@@ -23,7 +23,6 @@ namespace nc {
         }
         
         std::string vStr = ss.str();
-        const GLchar* vCode = vStr.c_str();
 
         fIs.open(fPath);
         if(fIs.is_open()) {
@@ -32,6 +31,8 @@ namespace nc {
         }
         
         std::string fStr = ss2.str();
+        
+        const GLchar* vCode = vStr.c_str();
         const GLchar* fCode = fStr.c_str();
 
         GLint success;
@@ -58,36 +59,77 @@ namespace nc {
             NC_LOG_ERROR( glLog);
         }
 
-        _programId = glCreateProgram();
-        glAttachShader(_programId, vs);
-        glAttachShader(_programId, fs);
-        glLinkProgram(_programId);
-        glGetProgramiv(_programId, GL_LINK_STATUS, &success);
+        mProgramId = glCreateProgram();
+        glAttachShader(mProgramId, vs);
+        glAttachShader(mProgramId, fs);
+        glLinkProgram(mProgramId);
+        glValidateProgram(mProgramId);
+        glGetProgramiv(mProgramId, GL_LINK_STATUS, &success);
         if(!success) {
-            glGetProgramInfoLog(_programId, 512, nullptr, glLog);
+            glGetProgramInfoLog(mProgramId, 512, nullptr, glLog);
             NC_LOG_ERROR(glLog);
+            glDeleteProgram(mProgramId);
         }
         glDeleteShader(vs);
         glDeleteShader(fs);
+    }
+    
+    void Shader::bind()
+    {
+        glUseProgram(mProgramId);
+    }
+
+    void Shader::unbind()
+    {
+        glUseProgram(0);
+    }
+
+
+    void Shader::setUniformInt(const std::string& name, int val)
+    {
+        glUseProgram(mProgramId);
+        glUniform1i(_getUnifogrmLocation(name), val);
+    }
+
+    void Shader::setUniformFloat(const std::string& name, float val)
+    {
+        glUseProgram(mProgramId);
+        glUniform1f(_getUnifogrmLocation(name), val);
+    }
+
+    void Shader::setUniformFloat2(const std::string& name, float val1, float val2)
+    {
+        glUseProgram(mProgramId);
+        glUniform2f(_getUnifogrmLocation(name), val1, val2);
 
     }
 
-    void Shader::useProgram()
+    void Shader::setUniformFloat3(const std::string& name, float val1, float val2, float val3)
     {
-        glUseProgram(_programId);
+        glUseProgram(mProgramId);
+        glUniform3f(_getUnifogrmLocation(name), val1, val2, val3);
+
     }
 
-    void Shader::setUniformMat4fv(const char* name, const glm::mat4& mat)
+    void Shader::setUniformFloat4(const std::string& name, float val1, float val2, float val3, float val4)
     {
-        glUniformMatrix4fv(glGetUniformLocation(_programId, name),1, GL_FALSE, glm::value_ptr(mat));
+        glUseProgram(mProgramId);
+        glUniform4f(_getUnifogrmLocation(name), val1, val2, val3, val4);
     }
 
-    void Shader::useUniform()
+    void Shader::setUniformMat4fv(const std::string& name, const glm::mat4& mat)
     {
-        GLfloat timeValue = glfwGetTime();
-        GLfloat castomColor[] = { 0.0f, (sin(timeValue) / 2) + 0.5f, 0.0f, 1.0f};
-        GLint vertexColorLocation = glGetUniformLocation(_programId, "ourColor");
-        glUniform4f(vertexColorLocation, castomColor[0], castomColor[1], castomColor[2], castomColor[3]);
+        glUseProgram(mProgramId);
+        glUniformMatrix4fv(_getUnifogrmLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
+    }
+
+    int Shader::_getUnifogrmLocation(const std::string& name)
+    {
+        auto it = mUniformLocs.find(name);
+        if(it == mUniformLocs.end())
+            mUniformLocs[name] = glGetUniformLocation(mProgramId, name.c_str());
+
+        return mUniformLocs[name];
     }
 
 }

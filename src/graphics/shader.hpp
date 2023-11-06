@@ -11,25 +11,39 @@
  #include <glm/glm/ext/matrix_float4x4.hpp>
 
 #include <GLFW/glfw3.h> 
+#include <string>
+#include <unordered_map>
 #include <vector>
 #define GL_SILENCE_DEPRECATION
 
 
-namespace nc{
+namespace nc::graphics{
 
 class Shader{
 public:
     Shader(const char* vertexPath, const char* fragmentPath);
     ~Shader(){}
-    void useProgram();
-    const GLuint program() {return _programId;}
-    void setUniformMat4fv(const char* name, const glm::mat4& mat);
-    void useUniform();
+    
+    void bind();
+    void unbind();
+
+
+    inline void useProgram() {glUseProgram(mProgramId);}
+    
+    void setUniformInt(const std::string& name, int val);
+    void setUniformFloat(const std::string& name, float val);
+    void setUniformFloat2(const std::string& name, float val1, float val2);
+    void setUniformFloat3(const std::string& name, float val1, float val2, float val3);
+    void setUniformFloat4(const std::string& name, float val1, float val2, float val3, float val4);
+    void setUniformMat4fv(const std::string& name, const glm::mat4& mat);
+private:
+    int _getUnifogrmLocation(const std::string& name);
 private:
     
-    GLuint _programId;
-    GLuint _vs;
-    GLuint _fs;
+    GLuint mProgramId;
+    std::unordered_map<std::string, int> mUniformLocs;
+    // GLuint mVS;
+    // GLuint mFS;
 
 
 };

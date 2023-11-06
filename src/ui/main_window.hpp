@@ -8,7 +8,9 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3_loader.h>
 #include "../graphics/shader.hpp"
-
+#include "../graphics/mesh.hpp"
+#include "../graphics/frame_buffer.hpp"
+#include "../managers/render_manager.hpp"
 #include "camera.hpp"
 
 
@@ -27,6 +29,7 @@ namespace nc {
             ,_width(w)
             ,_height(h)
             ,_camera()
+            , mRenderManager()
             {}
         
         MainWindow(const MainWindow&) = delete;
@@ -41,8 +44,14 @@ namespace nc {
         bool shouldClose() {return glfwWindowShouldClose(_glWindow);}
     private:
         void _setGLSLVersion();
-        Shader* _shader1;
+        void _createFrameBuffer();
+        void _bindFrameBuffer();
+        void _unbindFrameBuffer();
+        void _rescaleFrameBuffer(const float width, const float height);
     private:
+        managers::RenderManager mRenderManager;
+        std::shared_ptr<graphics::Shader> _shader1;
+        std::shared_ptr<graphics::Mesh> _mesh1;
         GLFWwindow*         _glWindow;
         const char*         _glslVersion;
         const std::string   _windowName;
@@ -50,5 +59,10 @@ namespace nc {
         size_t              _height; 
 
         Camera              _camera;
+
+        // std::shared_ptr<FrameBuffer> _frameBuffer;
+        GLuint              _FBO;
+        GLuint              _RBO;
+        GLuint              _textureId;
     };
 }
