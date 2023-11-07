@@ -44,10 +44,6 @@ namespace nc {
         bool shouldClose() {return glfwWindowShouldClose(_glWindow);}
     private:
         void _setGLSLVersion();
-        void _createFrameBuffer();
-        void _bindFrameBuffer();
-        void _unbindFrameBuffer();
-        void _rescaleFrameBuffer(const float width, const float height);
     private:
         managers::RenderManager mRenderManager;
         std::shared_ptr<graphics::Shader> _shader1;
@@ -60,9 +56,6 @@ namespace nc {
 
         Camera              _camera;
 
-        // std::shared_ptr<FrameBuffer> _frameBuffer;
-        GLuint              _FBO;
-        GLuint              _RBO;
-        GLuint              _textureId;
+        std::shared_ptr<graphics::FrameBuffer> _frameBuffer;
     };
 }

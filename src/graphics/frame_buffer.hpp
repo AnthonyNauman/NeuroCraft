@@ -4,7 +4,7 @@
 
 
 #include <stdint.h>
-namespace nc {
+namespace nc::graphics {
 
 
     class FrameBuffer{

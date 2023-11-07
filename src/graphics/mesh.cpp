@@ -1,9 +1,12 @@
 #include "mesh.hpp"
 #include <glad/include/glad/glad.h>
+#include <stdint.h>
 namespace nc::graphics {
 
     Mesh::Mesh(float* vertexArray, uint64_t vCount, uint64_t dim)
     : mVCount(vCount)
+    , mECount(0)
+    , mEBO(0)
     {
         glGenVertexArrays(1, &mVAO);
         glBindVertexArray(mVAO);
@@ -20,9 +23,25 @@ namespace nc::graphics {
         glBindVertexArray(0);
     }
     
+    Mesh::Mesh(float* vertexArray, uint64_t vCount, uint64_t dim, uint32_t* elementArray, uint64_t eCount)
+    : Mesh(vertexArray, vCount, dim)
+    {
+        mECount = eCount;
+        glBindVertexArray(mVAO);
+
+        glGenBuffers(1, &mEBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, eCount * sizeof(uint32_t), elementArray, GL_STATIC_DRAW);
+
+        glBindVertexArray(0);
+    }
+
     Mesh::~Mesh()
     {
         glDeleteBuffers(1, &mPosVBO);
+        if(mEBO)
+            glDeleteBuffers(1, &mEBO);
+        
         glDeleteVertexArrays(1, &mVAO);
     }
 

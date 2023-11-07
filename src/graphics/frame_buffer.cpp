@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <glad/include/glad/glad.h>
 #include "../logger.hpp"
-namespace nc {
+namespace nc::graphics {
 
     FrameBuffer::FrameBuffer(uint32_t w, uint32_t h)
     : _width(w)
@@ -22,6 +22,8 @@ namespace nc {
         glGenTextures(1, &_textureId);
         glBindTexture(GL_TEXTURE_2D, _textureId);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glBindTexture(GL_TEXTURE_2D, 0);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _textureId, 0);
         // create depth/stensil render buffer
@@ -31,7 +33,7 @@ namespace nc {
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _RBO);
 
-        if(glCheckFramebufferStatus(GL_FRAMEBUFFER)) 
+        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
             NC_LOG_ERROR("[_createFrameBuffer] framebuffer is not complete!!!");
         
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

@@ -61,4 +61,27 @@ namespace nc::managers {
         glClearColor(r, g, b, a);
     }
 
+    void RenderManager::_pushFrameBuffer(std::shared_ptr<graphics::FrameBuffer> fBuf)
+    {
+        mFrameBufs.push(fBuf);
+        glBindFramebuffer(GL_FRAMEBUFFER, fBuf->FBO());
+
+        float r,g,b,a;
+        fBuf->getColor(r, g, b, a);
+        glClearColor(r, g, b, a);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+    
+    void RenderManager::_popFrameBuffer()
+    {
+        if(mFrameBufs.size()) {
+            mFrameBufs.pop();
+
+            if(mFrameBufs.size()) {
+                auto nextBuf = mFrameBufs.top();
+                glBindFramebuffer(GL_FRAMEBUFFER, nextBuf->FBO());
+            } else 
+                glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        } 
+    }
 }
