@@ -11,8 +11,7 @@
 #include "../graphics/mesh.hpp"
 #include "../graphics/frame_buffer.hpp"
 #include "../managers/render_manager.hpp"
-#include "camera.hpp"
-
+#include "../camera/camera_controller.hpp"
 
 
 #include <GLFW/glfw3.h> 
@@ -28,7 +27,6 @@ namespace nc {
             :_windowName(wName)
             ,_width(w)
             ,_height(h)
-            ,_camera()
             , mRenderManager()
             {}
         
@@ -54,8 +52,8 @@ namespace nc {
         size_t              _width; 
         size_t              _height; 
 
-        Camera              _camera;
 
         std::shared_ptr<graphics::FrameBuffer> _frameBuffer;
+        std::shared_ptr<camera::CameraController> m_CameraController;
     };
 }

@@ -1,5 +1,5 @@
 #include "main_window.hpp"
-#include "camera.hpp"
+#include "../camera/camera.hpp"
 #include "glm/glm/ext/vector_float3.hpp"
 #include "imgui.h"
 #include "iostream"
@@ -98,6 +98,7 @@ namespace nc {
         const char fPath[] = "../res/m_frag.glsl";
         
         mRenderManager.init();
+        m_CameraController = std::make_shared<camera::CameraController>();
         _frameBuffer = std::make_shared<graphics::FrameBuffer>(_width, _height);
         _shader1 = std::make_shared<graphics::Shader>(vPath, fPath);
         _mesh1 = std::make_shared<graphics::Mesh>(&squareVertices[0], 4, 3, &squareElements[0], 6);
@@ -107,8 +108,6 @@ namespace nc {
     
     void MainWindow::update()
     {
-        
-
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -123,14 +122,16 @@ namespace nc {
         ImGui::SliderFloat3("Camera rotation", camRot, 0.f, 360.f);
         ImGui::Checkbox("Perspective", &bPerspectiveCamera);
         
-        _camera.setPosition(glm::vec3(camPos[0], camPos[1], camPos[2]));
-        _camera.setRotation(glm::vec3(camRot[0],camRot[1],camRot[2]));
-        _camera.setProjectionMode(bPerspectiveCamera ? Camera::Projection::Perspective : Camera::Projection::Orthographic);
+        m_CameraController->setCameraPos(glm::vec3(camPos[0], camPos[1], camPos[2]));
+        m_CameraController->setCameraPos(glm::vec3(camRot[0], camRot[1], camRot[2]));
 
         ImGui::End();
 
-
+        double cursorX;
+        double cursorY;
+        glfwGetCursorPos(_glWindow, &cursorX, &cursorY);
         // Poll and handle events (inputs, window resize, etc.)
+        // NC_LOG_INFO("Cursor position X: {}\tY: {}", cursorX, cursorY);
         glfwPollEvents() ;
         
         _frameBuffer->setColor(0.1f, 0.2f, 0.4f, 1.f);
@@ -138,14 +139,24 @@ namespace nc {
         
         if(ImGui::Begin("Scene")) {
             
-            const float w = ImGui::GetContentRegionAvail().x;
-            const float h = ImGui::GetContentRegionAvail().y;
-            ImVec2 startPos = ImGui::GetCursorScreenPos();
-            ImVec2 endPos = {startPos.x + w, startPos.y + h};
+            ImVec2 scenePos = ImGui::GetCursorScreenPos();
+            const float sWidth = ImGui::GetContentRegionAvail().x;
+            const float sHeight = ImGui::GetContentRegionAvail().y;
+
+            ImVec2 mPos = ImGui::GetMousePos();
+            // if mouse in scene we can get input from it
+            
+            bool bMouseOnScene =    mPos.x > scenePos.x && mPos.x < scenePos.x + sWidth
+                                &&  mPos.y > scenePos.y && mPos.y < scenePos.y + sHeight;
+
+            ImVec2 sMousePos = {mPos.x - scenePos.x, mPos.y - scenePos.y};
+            if(bMouseOnScene)
+                NC_LOG_INFO("Mouse position X: {}\tY: {}", sMousePos.x, sMousePos.y);
+            ImVec2 endPos = {scenePos.x + sWidth, scenePos.y + sHeight};
             ImVec2 uv0 = {0, 1};
             ImVec2 uv1 = {1, 0};
             ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<void*>(_frameBuffer->textureId())
-                                                , startPos 
+                                                , scenePos 
                                                 , endPos
                                                 , uv0
                                                 , uv1);
@@ -164,7 +175,7 @@ namespace nc {
             glfwMakeContextCurrent(backupContext);
         }
 
-        _shader1->setUniformMat4fv("translate", _camera.camViewMatrix());
+        _shader1->setUniformMat4fv("translate",m_CameraController->cameraViewMatrix());
         auto rc = std::make_unique<graphics::renderCommands::RenderMesh>(_mesh1, _shader1);
         mRenderManager.submit(std::move(rc));
         mRenderManager.submit(std::move(std::move(std::make_unique<graphics::renderCommands::PopFrameBuffer>(mRenderManager))));

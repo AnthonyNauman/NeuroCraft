@@ -1,16 +1,39 @@
 #include "camera.hpp"
 #include "glm/glm/ext/matrix_float4x4.hpp"
 
-namespace nc {
+namespace nc::camera {
 
     Camera::Camera(const glm::vec3& pos, const glm::vec3& rot, const Projection pMode )
-    : _pos(pos)
-    , _rot(rot)
-    , _pMode(pMode)
+    : mWorldPos(pos)
+    , mRot(rot)
+    , mProjection(pMode)
     {
         updateViewMatrix();
-        updateProjectionMatrix();
     }
+
+void Camera::moveX(const glm::vec3 deltaX)
+{
+    mWorldPos += mCamX * deltaX;
+}
+
+void Camera::moveY(const glm::vec3 deltaY)
+{
+    mWorldPos += mCamY * deltaY;
+}
+
+void Camera::moveZ(const glm::vec3 deltaZ)
+{
+    mWorldPos += mCamZ * deltaZ;
+}
+
+void Camera::moveAndRotate(const glm::vec3& trans, const glm::vec3& rot)
+{
+        mWorldPos += mCamX * trans.x;
+        mWorldPos += mCamY * trans.y;
+        mWorldPos += mCamZ * trans.z;
+
+        mRot += rot;
+}
 
     void Camera::setPosition(const glm::vec3& pos)
     {

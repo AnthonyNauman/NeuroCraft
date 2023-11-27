@@ -15,14 +15,16 @@ set(NEURO_CRAFT_PUBLIC_INCLUDES
         src/app.hpp
         src/logger.hpp
         src/ui/main_window.hpp
-        src/ui/camera.hpp
+        src/camera/camera.hpp
+        src/camera/camera_controller.hpp
         src/managers/render_manager.hpp
 )
 
 set(NEURO_CRAFT_PUBLIC_SOURCES
         src/app.cpp
         src/ui/main_window.cpp
-        src/ui/camera.cpp
+        src/camera/camera.cpp
+        src/camera/camera_controller.cpp
         src/managers/render_manager.cpp
 )
 
