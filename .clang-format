@@ -11,7 +11,7 @@ BraceWrapping:
   AfterEnum: true 
   AfterNamespace: false 
   AfterExternBlock: false
-  SplitEmptyFunction: true 
+  SplitEmptyFunction: false 
   AfterFunction: true 
   BeforeCatch: false 
   BeforeElse: false 
