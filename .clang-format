@@ -34,9 +34,14 @@ SpacesInParentheses: false
 SpacesInAngles: false 
 SpacesInCStyleCastParentheses: false 
 SpacesInConditionalStatement: false
+SpaceInEmptyBlock: false
+AlignConsecutiveDeclarations: true
+AlignConsecutiveAssignments : true
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
 
 
 SpaceBeforeRangeBasedForLoopColon: true
 
 PointerAlignment : Left 
-ColumnLimit : 200
+ColumnLimit : 140
