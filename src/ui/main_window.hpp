@@ -25,8 +25,7 @@ namespace nc {
           , _width(w)
           , _height(h)
           , mRenderManager()
-        {
-        }
+        {}
 
         MainWindow(const MainWindow&) = delete;
         MainWindow(MainWindow&&)      = delete;

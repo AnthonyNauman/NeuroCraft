@@ -30,8 +30,7 @@ namespace nc::graphics {
             RenderMesh(std::weak_ptr<Mesh> meshPtr, std::weak_ptr<Shader> shaderPtr)
               : m_mesh(meshPtr)
               , m_shader(shaderPtr)
-            {
-            }
+            {}
 
             virtual void execute() override;
 
@@ -46,8 +45,7 @@ namespace nc::graphics {
             PushFrameBuffer(managers::RenderManager& rm, std::weak_ptr<FrameBuffer> fBuf)
               : m_renderManager(rm)
               , m_frameBuffer(fBuf)
-            {
-            }
+            {}
 
             virtual void execute() override;
 
@@ -61,8 +59,7 @@ namespace nc::graphics {
         public:
             PopFrameBuffer(managers::RenderManager& rm)
               : m_renderManager(rm)
-            {
-            }
+            {}
 
             virtual void execute() override;
 
