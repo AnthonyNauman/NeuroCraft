@@ -28,13 +28,15 @@ AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: true 
 IndentCaseLabels: true
 
+
 SpacesInSquareBrackets: false 
 SpacesInParentheses: false 
 SpacesInAngles: false 
 SpacesInCStyleCastParentheses: false 
 SpacesInConditionalStatement: false
 
+
 SpaceBeforeRangeBasedForLoopColon: true
 
 PointerAlignment : Left 
-ColumnLimit : 140
+ColumnLimit : 200
