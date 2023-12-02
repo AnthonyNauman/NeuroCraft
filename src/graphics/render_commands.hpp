@@ -1,12 +1,11 @@
 #pragma once
 
-#include <memory>
-
 #include <glad/include/glad/glad.h>
 #include <spdlog/include/spdlog/spdlog.h>
 
-#include "../managers/render_manager.hpp"
+#include <memory>
 
+#include "../managers/render_manager.hpp"
 #include "frame_buffer.hpp"
 #include "mesh.hpp"
 #include "shader.hpp"
@@ -16,53 +15,59 @@ namespace nc::managers {
 }
 
 namespace nc::graphics {
-namespace renderCommands {
+    namespace renderCommands {
 
-    class RenderCommand
-    {
-    public:
-        virtual void execute() = 0;
-        virtual ~RenderCommand() { } 
-    };
+        class RenderCommand
+        {
+        public:
+            virtual void execute() = 0;
+            virtual ~RenderCommand() {}
+        };
 
-    class RenderMesh : public RenderCommand
-    {
-    public:
-        RenderMesh(std::weak_ptr<Mesh> meshPtr, std::weak_ptr<Shader> shaderPtr)
-        : m_mesh(meshPtr)
-        , m_shader(shaderPtr)
-        { }
+        class RenderMesh : public RenderCommand
+        {
+        public:
+            RenderMesh(std::weak_ptr<Mesh> meshPtr, std::weak_ptr<Shader> shaderPtr)
+              : m_mesh(meshPtr)
+              , m_shader(shaderPtr)
+            {
+            }
 
-        virtual void execute() override;
+            virtual void execute() override;
 
-    private:
-        std::weak_ptr<Mesh> m_mesh;
-        std::weak_ptr<Shader> m_shader;
-        
-    };
+        private:
+            std::weak_ptr<Mesh>   m_mesh;
+            std::weak_ptr<Shader> m_shader;
+        };
 
-    class PushFrameBuffer : public RenderCommand
-    {
-    public:
-        PushFrameBuffer(managers::RenderManager& rm,std::weak_ptr<FrameBuffer> fBuf) 
-        : m_renderManager(rm)
-        , m_frameBuffer(fBuf)
-        {}
+        class PushFrameBuffer : public RenderCommand
+        {
+        public:
+            PushFrameBuffer(managers::RenderManager& rm, std::weak_ptr<FrameBuffer> fBuf)
+              : m_renderManager(rm)
+              , m_frameBuffer(fBuf)
+            {
+            }
 
-        virtual void execute() override;
-    private:
-        nc::managers::RenderManager& m_renderManager;
-        std::weak_ptr<FrameBuffer> m_frameBuffer;
-    };
+            virtual void execute() override;
 
-    class PopFrameBuffer : public RenderCommand
-    {
-    public:
-        PopFrameBuffer(managers::RenderManager& rm) : m_renderManager(rm){} 
+        private:
+            nc::managers::RenderManager& m_renderManager;
+            std::weak_ptr<FrameBuffer>   m_frameBuffer;
+        };
 
-        virtual void execute() override;
-    private:
-        nc::managers::RenderManager& m_renderManager;
-    };
-}
+        class PopFrameBuffer : public RenderCommand
+        {
+        public:
+            PopFrameBuffer(managers::RenderManager& rm)
+              : m_renderManager(rm)
+            {
+            }
+
+            virtual void execute() override;
+
+        private:
+            nc::managers::RenderManager& m_renderManager;
+        };
+    }
 }

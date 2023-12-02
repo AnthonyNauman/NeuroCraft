@@ -3,9 +3,9 @@
 namespace nc::graphics {
 
     Mesh::Mesh(float* vertexArray, uint64_t vCount, uint64_t dim)
-    : m_vCount(vCount)
-    , m_eCount(0)
-    , m_EBO(0)
+      : m_vCount(vCount)
+      , m_eCount(0)
+      , m_EBO(0)
     {
         glGenVertexArrays(1, &m_VAO);
         glBindVertexArray(m_VAO);
@@ -21,9 +21,9 @@ namespace nc::graphics {
 
         glBindVertexArray(0);
     }
-    
+
     Mesh::Mesh(float* vertexArray, uint64_t vCount, uint64_t dim, uint32_t* elementArray, uint64_t eCount)
-    : Mesh(vertexArray, vCount, dim)
+      : Mesh(vertexArray, vCount, dim)
     {
         m_eCount = eCount;
         glBindVertexArray(m_VAO);
@@ -38,9 +38,9 @@ namespace nc::graphics {
     Mesh::~Mesh()
     {
         glDeleteBuffers(1, &m_posVBO);
-        if(m_EBO)
+        if (m_EBO)
             glDeleteBuffers(1, &m_EBO);
-        
+
         glDeleteVertexArrays(1, &m_VAO);
     }
 

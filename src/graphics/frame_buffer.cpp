@@ -3,19 +3,19 @@
 namespace nc::graphics {
 
     FrameBuffer::FrameBuffer(uint32_t w, uint32_t h)
-    : m_width(w)
-    , m_height(h)
-    , m_FBO(0)
-    , m_RBO(0)
-    , m_textureId(0)
-    , m_CCR(1)
-    , m_CCG(1)
-    , m_CCB(1)
-    , m_CCA(1)
+      : m_width(w)
+      , m_height(h)
+      , m_FBO(0)
+      , m_RBO(0)
+      , m_textureId(0)
+      , m_CCR(1)
+      , m_CCG(1)
+      , m_CCB(1)
+      , m_CCA(1)
     {
         glGenFramebuffers(1, &m_FBO);
         glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-        
+
         // create color texture
         glGenTextures(1, &m_textureId);
         glBindTexture(GL_TEXTURE_2D, m_textureId);
@@ -31,18 +31,18 @@ namespace nc::graphics {
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
 
-        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
             NC_LOG_ERROR("[_createFrameBuffer] framebuffer is not complete!!!");
-        } 
-               
+        }
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     FrameBuffer::~FrameBuffer()
     {
         glDeleteFramebuffers(1, &m_FBO);
-        m_FBO = 0;
-        m_RBO = 0;
+        m_FBO       = 0;
+        m_RBO       = 0;
         m_textureId = 0;
     }
 

@@ -1,34 +1,34 @@
 #include "shader.hpp"
 
-namespace nc::graphics{
+namespace nc::graphics {
 
     Shader::Shader(const char* vPath, const char* fPath)
     {
-        std::ifstream vIs;
-        std::ifstream fIs;
+        std::ifstream     vIs;
+        std::ifstream     fIs;
         std::stringstream ss;
         std::stringstream ss2;
-        
+
         vIs.open(vPath);
-        if(vIs.is_open()) {
+        if (vIs.is_open()) {
             ss << vIs.rdbuf();
             vIs.close();
         }
-        
+
         std::string vStr = ss.str();
 
         fIs.open(fPath);
-        if(fIs.is_open()) {
+        if (fIs.is_open()) {
             ss2 << fIs.rdbuf();
             fIs.close();
         }
-        
+
         std::string fStr = ss2.str();
-        
+
         const GLchar* vCode = vStr.c_str();
         const GLchar* fCode = fStr.c_str();
 
-        GLint success;
+        GLint  success;
         GLuint vs, fs;
 
         GLchar glLog[512];
@@ -38,7 +38,7 @@ namespace nc::graphics{
         glCompileShader(vs);
 
         glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
-        if(!success) {
+        if (!success) {
             glGetShaderInfoLog(vs, 512, nullptr, glLog);
             NC_LOG_ERROR(glLog);
         }
@@ -47,9 +47,9 @@ namespace nc::graphics{
         glCompileShader(fs);
 
         glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
-        if(!success) {
+        if (!success) {
             glGetShaderInfoLog(fs, 512, nullptr, glLog);
-            NC_LOG_ERROR( glLog);
+            NC_LOG_ERROR(glLog);
         }
 
         m_programId = glCreateProgram();
@@ -58,7 +58,7 @@ namespace nc::graphics{
         glLinkProgram(m_programId);
         glValidateProgram(m_programId);
         glGetProgramiv(m_programId, GL_LINK_STATUS, &success);
-        if(!success) {
+        if (!success) {
             glGetProgramInfoLog(m_programId, 512, nullptr, glLog);
             NC_LOG_ERROR(glLog);
             glDeleteProgram(m_programId);
@@ -66,17 +66,10 @@ namespace nc::graphics{
         glDeleteShader(vs);
         glDeleteShader(fs);
     }
-    
-    void Shader::bind()
-    {
-        glUseProgram(m_programId);
-    }
 
-    void Shader::unbind()
-    {
-        glUseProgram(0);
-    }
+    void Shader::bind() { glUseProgram(m_programId); }
 
+    void Shader::unbind() { glUseProgram(0); }
 
     void Shader::setUniformInt(const std::string& name, int val)
     {
@@ -94,14 +87,12 @@ namespace nc::graphics{
     {
         glUseProgram(m_programId);
         glUniform2f(getUnifogrmLocation(name), val1, val2);
-
     }
 
     void Shader::setUniformFloat3(const std::string& name, float val1, float val2, float val3)
     {
         glUseProgram(m_programId);
         glUniform3f(getUnifogrmLocation(name), val1, val2, val3);
-
     }
 
     void Shader::setUniformFloat4(const std::string& name, float val1, float val2, float val3, float val4)
@@ -119,7 +110,7 @@ namespace nc::graphics{
     int Shader::getUnifogrmLocation(const std::string& name)
     {
         auto it = m_uniformLocs.find(name);
-        if(it == m_uniformLocs.end())
+        if (it == m_uniformLocs.end())
             m_uniformLocs[name] = glGetUniformLocation(m_programId, name.c_str());
 
         return m_uniformLocs[name];
