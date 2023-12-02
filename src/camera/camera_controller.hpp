@@ -1,5 +1,6 @@
 #pragma once
-#include "camera.hpp"
+
+#include <memory>
 
 #include "glm/glm/detail/qualifier.hpp"
 #include "glm/glm/ext/matrix_float4x4.hpp"
@@ -7,8 +8,8 @@
 #include <glm/glm/vec3.hpp>
 #include <glm/glm/ext/matrix_float4x3.hpp>
 #include <glm/glm/trigonometric.hpp>
-#include <memory>
 
+#include "camera.hpp"
 
 namespace nc::camera {
 
@@ -28,7 +29,6 @@ namespace nc::camera {
         glm::mat4 cameraViewMatrix();
 
     private:
-        std::shared_ptr<Camera> mCamera;
+        std::shared_ptr<Camera> m_Camera;
     };
-
 }

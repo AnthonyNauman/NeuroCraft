@@ -1,17 +1,11 @@
 #include "render_commands.hpp"
-#include "frame_buffer.hpp"
-#include "glad/include/glad/glad.h"
-#include "../managers/render_manager.hpp"
-#include "shader.hpp"
-#include <memory>
-
 
 namespace nc::graphics::renderCommands {
 
     void RenderMesh::execute()
     {
-        std::shared_ptr<Mesh> mesh = mMesh.lock();
-        std::shared_ptr<Shader> shader = mShader.lock();
+        std::shared_ptr<Mesh> mesh = m_mesh.lock();
+        std::shared_ptr<Shader> shader = m_shader.lock();
 
         if(mesh && shader) {
             mesh->bind();
@@ -31,15 +25,15 @@ namespace nc::graphics::renderCommands {
 
     void PushFrameBuffer::execute()
     {
-        std::shared_ptr<graphics::FrameBuffer>fb = mFrameBuffer.lock();
+        std::shared_ptr<graphics::FrameBuffer>fb = m_frameBuffer.lock();
         if(fb) {
-            mRenderManager._pushFrameBuffer(fb);
+            m_renderManager._pushFrameBuffer(fb);
         } else
             NC_LOG_WARN("Execution of PushFrameBuffer with invalid data!");
     }
 
     void PopFrameBuffer::execute()
     {
-        mRenderManager._popFrameBuffer(); 
+        m_renderManager._popFrameBuffer(); 
     }
 }
