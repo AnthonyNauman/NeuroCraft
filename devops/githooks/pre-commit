@@ -2,6 +2,8 @@
 
 for file in `git diff --staged --name-only | grep -i -E '\.(cpp|c|cxx|h|hpp)'`; do
 	echo ${file}
-	clang-format -i ${file}
-	git add ${file}
+	if [ -f /tmp/foo.txt ]; then
+		clang-format -i ${file}
+		git add ${file}
+	fi
 done
