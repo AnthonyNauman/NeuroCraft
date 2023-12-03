@@ -16,3 +16,6 @@
 [submodule "devops/docs/Doxygen-Flat-Theme"]
 	path = devops/docs/Doxygen-Flat-Theme
 	url = git@github.com:AnthonyNauman/Doxygen-Flat-Theme.git
+[submodule "libs/nlohmann_json"]
+	path = libs/nlohmann_json
+	url = git@github.com:nlohmann/json.git
