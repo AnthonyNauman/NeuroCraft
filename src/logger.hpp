@@ -1,5 +1,6 @@
 #pragma once
 
+#include "set"
 #include "spdlog/spdlog.h"
 // #define DEBUG
 namespace nc {
@@ -15,4 +16,40 @@ namespace nc {
 #define NC_LOG_ERROR(...)
 #define NC_LOG_CRIT(...)
 #endif // !DEBUG
+
+    enum class LogLevels
+    {
+        DEBUG,
+        INFO,
+        WARNING,
+        ERR,
+        CRITICAL
+    };
+
+    class Logger
+    {
+    private:
+        Logger();
+
+    public:
+        static std::shared_ptr<Logger> getInstance()
+        {
+            static std::shared_ptr<Logger> loggerPtr{ new Logger() };
+            return loggerPtr;
+        }
+        ~Logger() {}
+
+        Logger(Logger&&)      = delete;
+        Logger(const Logger&) = delete;
+        Logger& operator=(const Logger&) = delete;
+        Logger& operator=(Logger&&) = delete;
+
+        void setLogLevel(int);
+        void addVisibleCategories(std::string);
+
+    private:
+        std::set<std::string> m_visibleCategories;
+        LogLevels             m_logLevel;
+    };
+
 }

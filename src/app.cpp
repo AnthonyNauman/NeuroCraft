@@ -15,6 +15,8 @@ namespace nc {
             return -1;
         }
 
+        initConfig();
+
         // Main loop
         while (!m_mainWindow->shouldClose()) {
             m_mainWindow->update();
@@ -24,4 +26,51 @@ namespace nc {
         return 0;
     }
 
+    void App::initConfig()
+    {
+        std::string configPath = "config";
+        if (!std::filesystem::exists(std::filesystem::path(configPath))) {
+            std::ofstream config;
+
+            json configJsonFile;
+            configJsonFile["log"] = { { "VisibleCategories", { "" } }, { "LogLevel", 0 } };
+
+            config.open(configPath);
+            if (config.is_open()) {
+                config << configJsonFile.dump();
+                config.flush();
+                config.close();
+            }
+        } else {
+            std::ifstream configFile(configPath);
+            json          configJsonFile;
+            try {
+                configJsonFile = json::parse(configFile);
+            } catch (...) {
+                std::ofstream bufferConfigFile;
+                bufferConfigFile.open(configPath);
+                if (bufferConfigFile.is_open()) {
+                    bufferConfigFile << "";
+                    json bufferConfigJsonFile;
+                    bufferConfigJsonFile["log"] = { { "VisibleCategories", { "" } }, { "LogLevel", 0 } };
+                    bufferConfigFile << bufferConfigJsonFile.dump();
+                    bufferConfigFile.flush();
+                    bufferConfigFile.close();
+                    return;
+                }
+            }
+            auto logger = nc::Logger::getInstance();
+
+            if (configJsonFile.contains("log")) {
+                if (configJsonFile["log"].contains("VisibleCategories")) {
+                    for (auto category : configJsonFile["log"]["VisibleCategories"]) {
+                        logger->addVisibleCategories(static_cast<std::string>(category));
+                    }
+                }
+                if (configJsonFile["log"].contains("LogLevel")) {
+                    logger->setLogLevel(static_cast<int>(configJsonFile["log"]["LogLevel"]));
+                }
+            }
+        }
+    }
 }

@@ -22,6 +22,7 @@ set(NEURO_CRAFT_PUBLIC_INCLUDES
 
 set(NEURO_CRAFT_PUBLIC_SOURCES
         src/app.cpp
+        src/logger.cpp
         src/ui/main_window.cpp
         src/camera/camera.cpp
         src/camera/camera_controller.cpp
@@ -87,6 +88,7 @@ add_executable(${PROJECT_NAME} src/main.cpp )
 
 add_subdirectory(libs/glfw ${CMAKE_CURRENT_BINARY_DIR}/libs/glfw)
 add_subdirectory(libs/spdlog ${CMAKE_CURRENT_BINARY_DIR}/libs/spdlog)
+add_subdirectory(libs/nlohmann_json ${CMAKE_CURRENT_BINARY_DIR}/libs/nlohmann_json)
 add_subdirectory(libs/glad ${CMAKE_CURRENT_BINARY_DIR}/libs/glad)
 add_subdirectory(libs/glm ${CMAKE_CURRENT_BINARY_DIR}/libs/glm)
 target_link_libraries(imgui_static PRIVATE glad glfw)
@@ -94,6 +96,7 @@ target_link_libraries(graphics_static PRIVATE glad glfw spdlog glm)
 target_link_libraries(neuro_craft_static PUBLIC 
             glfw
             spdlog
+            nlohmann_json
             glad
             imgui_static
             graphics_static

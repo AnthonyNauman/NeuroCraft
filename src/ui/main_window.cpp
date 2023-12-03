@@ -1,8 +1,8 @@
+#include "main_window.hpp"
 #include "../camera/camera.hpp"
 #include "glm/glm/ext/vector_float3.hpp"
 #include "imgui.h"
 #include "iostream"
-#include "main_window.hpp"
 
 #include "../libs/glad/include/glad/glad.h"
 #include "../logger.hpp"
@@ -11,9 +11,6 @@
 #include <algorithm>
 #include <filesystem>
 #include <gl/gl.h>
-#include <memory>
-#include <stdint.h>
-#include <vector>
 
 namespace nc {
 
@@ -148,8 +145,8 @@ namespace nc {
             // clang-format on
 
             ImVec2 sMousePos = { mPos.x - scenePos.x, mPos.y - scenePos.y };
-            if (bMouseOnScene)
-                NC_LOG_INFO("Mouse position X: {}\tY: {}", sMousePos.x, sMousePos.y);
+            // if (bMouseOnScene)
+            // NC_LOG_INFO("Mouse position X: {}\tY: {}", sMousePos.x, sMousePos.y);
             ImVec2 endPos = { scenePos.x + sWidth, scenePos.y + sHeight };
             ImVec2 uv0    = { 0, 1 };
             ImVec2 uv1    = { 1, 0 };
