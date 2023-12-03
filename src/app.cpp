@@ -3,7 +3,10 @@
 
 namespace nc {
 
-    App::App() { NC_LOG_INFO("App created"); }
+    App::App()
+    { /*NC_LOG_INFO("App created");*/
+        NC_LOG("Application", LogLevels::INFO) << "App created";
+    }
 
     int App::exec()
     {
