@@ -1,5 +1,5 @@
-#include "glad/include/glad/glad.h"
 #include "shader.hpp"
+#include "glad/include/glad/glad.h"
 #include <fstream>
 #include <glm/glm/gtc/type_ptr.hpp>
 #include <iostream>
