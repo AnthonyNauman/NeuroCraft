@@ -1,24 +1,23 @@
-#include "render_commands.hpp"
+#include "../managers/render_manager.hpp"
 #include "frame_buffer.hpp"
 #include "glad/include/glad/glad.h"
-#include "../managers/render_manager.hpp"
+#include "render_commands.hpp"
 #include "shader.hpp"
 #include <memory>
-
 
 namespace nc::graphics::renderCommands {
 
     void RenderMesh::execute()
     {
-        std::shared_ptr<Mesh> mesh = mMesh.lock();
-        std::shared_ptr<Shader> shader = mShader.lock();
+        std::shared_ptr<Mesh>   mesh   = m_mesh.lock();
+        std::shared_ptr<Shader> shader = m_shader.lock();
 
-        if(mesh && shader) {
+        if (mesh && shader) {
             mesh->bind();
             shader->bind();
-            if(mesh->getElementCount())
+            if (mesh->getElementCount())
                 glDrawElements(GL_TRIANGLES, mesh->getElementCount(), GL_UNSIGNED_INT, 0);
-            else 
+            else
                 glDrawArrays(GL_TRIANGLES /* GL_TRIANGLE_STRIP */, 0, mesh->getVertexCount());
 
             mesh->unbind();
@@ -26,20 +25,16 @@ namespace nc::graphics::renderCommands {
 
         } else
             NC_LOG_ERROR("Execution of RenderMesh with invalid data!");
-
     }
 
     void PushFrameBuffer::execute()
     {
-        std::shared_ptr<graphics::FrameBuffer>fb = mFrameBuffer.lock();
-        if(fb) {
-            mRenderManager._pushFrameBuffer(fb);
+        std::shared_ptr<graphics::FrameBuffer> fb = m_frameBuffer.lock();
+        if (fb) {
+            m_renderManager.pushFrameBuffer(fb);
         } else
             NC_LOG_WARN("Execution of PushFrameBuffer with invalid data!");
     }
 
-    void PopFrameBuffer::execute()
-    {
-        mRenderManager._popFrameBuffer(); 
-    }
+    void PopFrameBuffer::execute() { m_renderManager.popFrameBuffer(); }
 }
