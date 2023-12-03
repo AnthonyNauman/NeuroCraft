@@ -1,4 +1,7 @@
+#include "../logger.hpp"
 #include "frame_buffer.hpp"
+#include <glad/include/glad/glad.h>
+#include <stdint.h>
 
 namespace nc::graphics {
 

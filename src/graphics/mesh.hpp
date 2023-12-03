@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glad/include/glad/glad.h>
 #include <stdint.h>
 
 namespace nc::graphics {

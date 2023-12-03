@@ -1,11 +1,10 @@
 #pragma once
 
+#include "glm/glm/ext/matrix_float4x4.hpp"
+#include "glm/glm/ext/vector_float3.hpp"
 #include <glm/glm/ext/matrix_float4x3.hpp>
 #include <glm/glm/trigonometric.hpp>
 #include <glm/glm/vec3.hpp>
-
-#include "glm/glm/ext/matrix_float4x4.hpp"
-#include "glm/glm/ext/vector_float3.hpp"
 
 namespace nc::camera {
 
@@ -57,7 +56,6 @@ namespace nc::camera {
         // old
 
         glm::vec3 m_pos;
-        glm::vec3 m_rot;
         glm::mat4 m_viewMat;
         glm::mat4 m_projMat;
 

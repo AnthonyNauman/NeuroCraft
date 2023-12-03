@@ -1,14 +1,11 @@
 #pragma once
 
-#include <glad/include/glad/glad.h>
-#include <spdlog/include/spdlog/spdlog.h>
-
-#include <memory>
-
-#include "../managers/render_manager.hpp"
 #include "frame_buffer.hpp"
 #include "mesh.hpp"
 #include "shader.hpp"
+#include <glad/include/glad/glad.h>
+#include <memory>
+#include <spdlog/include/spdlog/spdlog.h>
 
 namespace nc::managers {
     class RenderManager;

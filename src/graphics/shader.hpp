@@ -1,24 +1,19 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "../libs/glad/include/glad/glad.h"
+#include "../logger.hpp"
+#include "../utils.hpp"
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_opengl3_loader.h>
 #include <imgui.h>
 
-#include <fstream>
 #include <glm/glm/ext/matrix_float4x4.hpp>
-#include <glm/glm/gtc/type_ptr.hpp>
-#include <iostream>
-#include <sstream>
+
+#include <GLFW/glfw3.h>
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-#include "../logger.hpp"
-#include "../utils.hpp"
-#include "glad/include/glad/glad.h"
-
 #define GL_SILENCE_DEPRECATION
 
 namespace nc::graphics {

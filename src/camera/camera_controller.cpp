@@ -1,4 +1,6 @@
 #include "camera_controller.hpp"
+#include "glm/ext/vector_float3.hpp"
+#include <memory>
 
 namespace nc::camera {
 

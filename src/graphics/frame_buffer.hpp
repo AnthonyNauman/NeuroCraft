@@ -1,9 +1,6 @@
 #pragma once
 
-#include <glad/include/glad/glad.h>
 #include <stdint.h>
-
-#include "../logger.hpp"
 
 namespace nc::graphics {
 

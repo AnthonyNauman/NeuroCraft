@@ -1,4 +1,5 @@
 #include "camera.hpp"
+#include "glm/glm/ext/matrix_float4x4.hpp"
 
 namespace nc::camera {
 

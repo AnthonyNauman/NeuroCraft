@@ -1,9 +1,4 @@
 #pragma once
-#include <GLFW/glfw3.h>
-#include <backends/imgui_impl_glfw.h>
-#include <backends/imgui_impl_opengl3.h>
-#include <backends/imgui_impl_opengl3_loader.h>
-#include <imgui.h>
 
 #include <memory>
 #include <string>
@@ -13,6 +8,12 @@
 #include "../graphics/mesh.hpp"
 #include "../graphics/shader.hpp"
 #include "../managers/render_manager.hpp"
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_opengl3_loader.h>
+#include <imgui.h>
+
+#include <GLFW/glfw3.h>
 #define GL_SILENCE_DEPRECATION
 
 namespace nc {

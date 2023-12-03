@@ -1,4 +1,8 @@
+#include "../logger.hpp"
 #include "render_manager.hpp"
+#include <algorithm>
+#include <glad/include/glad/glad.h>
+#include <memory>
 
 namespace nc::managers {
 

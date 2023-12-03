@@ -1,4 +1,9 @@
+#include "../managers/render_manager.hpp"
+#include "frame_buffer.hpp"
+#include "glad/include/glad/glad.h"
 #include "render_commands.hpp"
+#include "shader.hpp"
+#include <memory>
 
 namespace nc::graphics::renderCommands {
 
@@ -26,10 +31,10 @@ namespace nc::graphics::renderCommands {
     {
         std::shared_ptr<graphics::FrameBuffer> fb = m_frameBuffer.lock();
         if (fb) {
-            m_renderManager._pushFrameBuffer(fb);
+            m_renderManager.pushFrameBuffer(fb);
         } else
             NC_LOG_WARN("Execution of PushFrameBuffer with invalid data!");
     }
 
-    void PopFrameBuffer::execute() { m_renderManager._popFrameBuffer(); }
+    void PopFrameBuffer::execute() { m_renderManager.popFrameBuffer(); }
 }

@@ -1,4 +1,9 @@
+#include "glad/include/glad/glad.h"
 #include "shader.hpp"
+#include <fstream>
+#include <glm/glm/gtc/type_ptr.hpp>
+#include <iostream>
+#include <sstream>
 
 namespace nc::graphics {
 

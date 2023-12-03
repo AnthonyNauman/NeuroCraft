@@ -1,20 +1,19 @@
-#include <gl/gl.h>
-#include <stdint.h>
-
-#include <algorithm>
-#include <filesystem>
-#include <memory>
-#include <vector>
-
 #include "../camera/camera.hpp"
-#include "../libs/glad/include/glad/glad.h"
-#include "../logger.hpp"
-#include "../utils.hpp"
-#include "GLFW/glfw3.h"
 #include "glm/glm/ext/vector_float3.hpp"
 #include "imgui.h"
 #include "iostream"
 #include "main_window.hpp"
+
+#include "../libs/glad/include/glad/glad.h"
+#include "../logger.hpp"
+#include "../utils.hpp"
+#include "GLFW/glfw3.h"
+#include <algorithm>
+#include <filesystem>
+#include <gl/gl.h>
+#include <memory>
+#include <stdint.h>
+#include <vector>
 
 namespace nc {
 
@@ -98,9 +97,9 @@ namespace nc {
 
         m_renderManager.init();
         m_CameraController = std::make_shared<camera::CameraController>();
-        m_frameBuffer       = std::make_shared<graphics::FrameBuffer>(m_width, m_height);
-        m_shader1           = std::make_shared<graphics::Shader>(vPath, fPath);
-        m_mesh1             = std::make_shared<graphics::Mesh>(&squareVertices[0], 4, 3, &squareElements[0], 6);
+        m_frameBuffer      = std::make_shared<graphics::FrameBuffer>(m_width, m_height);
+        m_shader1          = std::make_shared<graphics::Shader>(vPath, fPath);
+        m_mesh1            = std::make_shared<graphics::Mesh>(&squareVertices[0], 4, 3, &squareElements[0], 6);
 
         return 0;
     }

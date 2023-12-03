@@ -1,10 +1,9 @@
 #pragma once
 
+#include "../graphics/render_commands.hpp"
 #include <memory>
 #include <queue>
 #include <stack>
-
-#include "../graphics/render_commands.hpp"
 
 namespace nc::managers {
 
