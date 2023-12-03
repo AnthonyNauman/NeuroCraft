@@ -10,3 +10,9 @@
 [submodule "libs/glm"]
 	path = libs/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "devops/docs/Doxygen-Dark-Theme"]
+	path = devops/docs/Doxygen-Dark-Theme
+	url = git@github.com:AnthonyNauman/Doxygen-Dark-Theme.git
+[submodule "devops/docs/Doxygen-Flat-Theme"]
+	path = devops/docs/Doxygen-Flat-Theme
+	url = git@github.com:AnthonyNauman/Doxygen-Flat-Theme.git
