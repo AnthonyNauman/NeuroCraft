@@ -27,6 +27,6 @@ namespace nc {
         App& operator=(App&&) = delete;
 
     private:
-        std::unique_ptr<MainWindow> _mainWindow;
+        std::unique_ptr<MainWindow> m_mainWindow;
     };
 }

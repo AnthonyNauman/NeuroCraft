@@ -65,14 +65,14 @@ namespace nc {
         _setGLSLVersion();
         glfwSetErrorCallback(utils::glfw_error_callback);
         /* Create a windowed mode window and its OpenGL context */
-        _glWindow = glfwCreateWindow(_width, _height, _windowName.c_str(), nullptr, nullptr);
-        if (!_glWindow) {
+        m_glWindow = glfwCreateWindow(m_width, m_height, m_windowName.c_str(), nullptr, nullptr);
+        if (!m_glWindow) {
             glfwTerminate();
             return -1;
         }
 
         /* Make the window's context current */
-        glfwMakeContextCurrent(_glWindow);
+        glfwMakeContextCurrent(m_glWindow);
         // Create window with graphics context
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             NC_LOG_CRIT("Can't init Glad");
@@ -90,17 +90,17 @@ namespace nc {
         ImGui::StyleColorsDark();
 
         // Setup Platform/Renderer backends
-        ImGui_ImplGlfw_InitForOpenGL(_glWindow, true);
-        ImGui_ImplOpenGL3_Init(_glslVersion);
+        ImGui_ImplGlfw_InitForOpenGL(m_glWindow, true);
+        ImGui_ImplOpenGL3_Init(m_glslVersion);
 
         const char vPath[] = "../res/m_vertex.glsl";
         const char fPath[] = "../res/m_frag.glsl";
 
-        mRenderManager.init();
+        m_renderManager.init();
         m_CameraController = std::make_shared<camera::CameraController>();
-        _frameBuffer       = std::make_shared<graphics::FrameBuffer>(_width, _height);
-        _shader1           = std::make_shared<graphics::Shader>(vPath, fPath);
-        _mesh1             = std::make_shared<graphics::Mesh>(&squareVertices[0], 4, 3, &squareElements[0], 6);
+        m_frameBuffer       = std::make_shared<graphics::FrameBuffer>(m_width, m_height);
+        m_shader1           = std::make_shared<graphics::Shader>(vPath, fPath);
+        m_mesh1             = std::make_shared<graphics::Mesh>(&squareVertices[0], 4, 3, &squareElements[0], 6);
 
         return 0;
     }
@@ -128,13 +128,13 @@ namespace nc {
 
         double cursorX;
         double cursorY;
-        glfwGetCursorPos(_glWindow, &cursorX, &cursorY);
+        glfwGetCursorPos(m_glWindow, &cursorX, &cursorY);
         // Poll and handle events (inputs, window resize, etc.)
         // NC_LOG_INFO("Cursor position X: {}\tY: {}", cursorX, cursorY);
         glfwPollEvents();
 
-        _frameBuffer->setColor(0.1f, 0.2f, 0.4f, 1.f);
-        mRenderManager.submit(std::move(std::make_unique<graphics::renderCommands::PushFrameBuffer>(mRenderManager, _frameBuffer)));
+        m_frameBuffer->setColor(0.1f, 0.2f, 0.4f, 1.f);
+        m_renderManager.submit(std::move(std::make_unique<graphics::renderCommands::PushFrameBuffer>(m_renderManager, m_frameBuffer)));
 
         if (ImGui::Begin("Scene")) {
             ImVec2      scenePos = ImGui::GetCursorScreenPos();
@@ -154,7 +154,7 @@ namespace nc {
             ImVec2 endPos = { scenePos.x + sWidth, scenePos.y + sHeight };
             ImVec2 uv0    = { 0, 1 };
             ImVec2 uv1    = { 1, 0 };
-            ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<void*>(_frameBuffer->textureId()), scenePos, endPos, uv0, uv1);
+            ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<void*>(m_frameBuffer->textureId()), scenePos, endPos, uv0, uv1);
         }
         ImGui::End();
 
@@ -168,13 +168,13 @@ namespace nc {
             glfwMakeContextCurrent(backupContext);
         }
 
-        _shader1->setUniformMat4fv("translate", m_CameraController->cameraViewMatrix());
-        auto rc = std::make_unique<graphics::renderCommands::RenderMesh>(_mesh1, _shader1);
-        mRenderManager.submit(std::move(rc));
-        mRenderManager.submit(std::move(std::move(std::make_unique<graphics::renderCommands::PopFrameBuffer>(mRenderManager))));
-        mRenderManager.flush();
+        m_shader1->setUniformMat4fv("translate", m_CameraController->cameraViewMatrix());
+        auto rc = std::make_unique<graphics::renderCommands::RenderMesh>(m_mesh1, m_shader1);
+        m_renderManager.submit(std::move(rc));
+        m_renderManager.submit(std::move(std::move(std::make_unique<graphics::renderCommands::PopFrameBuffer>(m_renderManager))));
+        m_renderManager.flush();
 
-        glfwSwapBuffers(_glWindow);
+        glfwSwapBuffers(m_glWindow);
     }
 
     void MainWindow::shutdown()
@@ -182,8 +182,8 @@ namespace nc {
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
-        mRenderManager.shutdown();
-        glfwDestroyWindow(_glWindow);
+        m_renderManager.shutdown();
+        glfwDestroyWindow(m_glWindow);
         glfwTerminate();
     }
 
@@ -197,7 +197,7 @@ namespace nc {
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 #else
         // GL 3.0 + GLSL 130
-        _glslVersion = "#version 130";
+        m_glslVersion = "#version 130";
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
         // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only

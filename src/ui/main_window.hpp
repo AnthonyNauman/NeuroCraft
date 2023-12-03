@@ -21,10 +21,10 @@ namespace nc {
     {
     public:
         MainWindow(size_t w = 600, size_t h = 480, const std::string wName = "")
-          : _windowName(wName)
-          , _width(w)
-          , _height(h)
-          , mRenderManager()
+          : m_windowName(wName)
+          , m_width(w)
+          , m_height(h)
+          , m_renderManager()
         {}
 
         MainWindow(const MainWindow&) = delete;
@@ -36,22 +36,22 @@ namespace nc {
         int  init();
         void update();
         void shutdown();
-        bool shouldClose() { return glfwWindowShouldClose(_glWindow); }
+        bool shouldClose() { return glfwWindowShouldClose(m_glWindow); }
 
     private:
         void _setGLSLVersion();
 
     private:
-        managers::RenderManager           mRenderManager;
-        std::shared_ptr<graphics::Shader> _shader1;
-        std::shared_ptr<graphics::Mesh>   _mesh1;
-        GLFWwindow*                       _glWindow;
-        const char*                       _glslVersion;
-        const std::string                 _windowName;
-        size_t                            _width;
-        size_t                            _height;
+        managers::RenderManager           m_renderManager;
+        std::shared_ptr<graphics::Shader> m_shader1;
+        std::shared_ptr<graphics::Mesh>   m_mesh1;
+        GLFWwindow*                       m_glWindow;
+        const char*                       m_glslVersion;
+        const std::string                 m_windowName;
+        size_t                            m_width;
+        size_t                            m_height;
 
-        std::shared_ptr<graphics::FrameBuffer>    _frameBuffer;
+        std::shared_ptr<graphics::FrameBuffer>    m_frameBuffer;
         std::shared_ptr<camera::CameraController> m_CameraController;
     };
 }

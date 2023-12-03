@@ -28,12 +28,12 @@ namespace nc::managers {
         void setClearColor(float r, float g, float b, float a);
 
     private:
-        void _pushFrameBuffer(std::shared_ptr<graphics::FrameBuffer> fBuf);
-        void _popFrameBuffer();
+        void pushFrameBuffer(std::shared_ptr<graphics::FrameBuffer> fBuf);
+        void popFrameBuffer();
 
     private:
-        std::queue<std::unique_ptr<graphics::renderCommands::RenderCommand>> mRenderCommands;
-        std::stack<std::shared_ptr<graphics::FrameBuffer>>                   mFrameBufs;
+        std::queue<std::unique_ptr<graphics::renderCommands::RenderCommand>> m_renderCommands;
+        std::stack<std::shared_ptr<graphics::FrameBuffer>>                   m_frameBufs;
     };
 
 }
