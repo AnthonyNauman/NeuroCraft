@@ -32,7 +32,7 @@ It aims to provide a solid foundation for creating any neural network architectu
 ## Building  
 
  ### Cloning repo
-1. ```Clone repository via the command ```
+1. ```Clone repository ```
  ```bash
  git clone https://github.com/AnthonyNauman/NeuroCraft.git
  ```
@@ -40,14 +40,14 @@ It aims to provide a solid foundation for creating any neural network architectu
  ```bash
  cd NeuroCraft
  ```
-3. ```Switch to the "develop" (or another one) branch via the command```
- ```bash
- git switch develop
- ```
-4. ```Run command in repository folder```
+3. ```Run command in repository folder```
 ```bash
 git submodule update --init --recursive
 ```
+4. ```Switch to the "develop" (or another one) branch```
+ ```bash
+ git switch develop
+ ```
 
  ### Build with CMake & Visual Studio:
 > [!IMPORTANT]
