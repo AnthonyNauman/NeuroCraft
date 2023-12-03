@@ -69,7 +69,7 @@ cmake -G "Visual Studio 17 2022" ..
 
 4. ```Run build```
 
- ### Build with GCC
+ ### Build with MinGW & GCC
 > [!IMPORTANT]
 > ```Requirements:```
 > - Install CMake 3.16.0 or newer
