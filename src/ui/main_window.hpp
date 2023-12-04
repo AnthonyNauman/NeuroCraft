@@ -5,6 +5,9 @@
 
 #include "../camera/camera_controller.hpp"
 #include "../graphics/frame_buffer.hpp"
+#include "../events/event.hpp"
+#include "../events/mouse_event_handler.hpp"
+#include "../events/method_event_handler.hpp"
 #include "../graphics/mesh.hpp"
 #include "../graphics/shader.hpp"
 #include "../managers/render_manager.hpp"
@@ -21,6 +24,8 @@ namespace nc {
     class MainWindow
     {
     public:
+
+    
         MainWindow(size_t w = 600, size_t h = 480, const std::string wName = "")
           : m_windowName(wName)
           , m_width(w)
@@ -39,6 +44,9 @@ namespace nc {
         void shutdown();
         bool shouldClose() { return glfwWindowShouldClose(m_glWindow); }
 
+    public:
+        ::events::TEvent<> onMouseMove;
+
     private:
         void _setGLSLVersion();
 
@@ -54,5 +62,7 @@ namespace nc {
 
         std::shared_ptr<graphics::FrameBuffer>    m_frameBuffer;
         std::shared_ptr<camera::CameraController> m_CameraController;
+
+
     };
 }

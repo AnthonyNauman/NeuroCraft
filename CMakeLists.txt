@@ -18,6 +18,10 @@ set(NEURO_CRAFT_PUBLIC_INCLUDES
         src/camera/camera.hpp
         src/camera/camera_controller.hpp
         src/managers/render_manager.hpp
+        src/events/event.hpp
+        src/events/event_handler.hpp
+        src/events/method_event_handler.hpp
+        src/events/mouse_event_handler.hpp
 )
 
 set(NEURO_CRAFT_PUBLIC_SOURCES

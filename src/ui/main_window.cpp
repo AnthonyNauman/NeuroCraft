@@ -101,6 +101,11 @@ namespace nc {
         m_shader1          = std::make_shared<graphics::Shader>(vPath, fPath);
         m_mesh1            = std::make_shared<graphics::Mesh>(&squareVertices[0], 4, 3, &squareElements[0], 6);
 
+
+        // Events
+        nc::events::MouseMoveEventHandler mouseMoveHandler;
+        onMouseMove += METHOD_HANDLER(mouseMoveHandler, nc::events::MouseMoveEventHandler::mouseMove);
+
         return 0;
     }
 
@@ -149,7 +154,8 @@ namespace nc {
 
             ImVec2 sMousePos = { mPos.x - scenePos.x, mPos.y - scenePos.y };
             if (bMouseOnScene)
-                NC_LOG_INFO("Mouse position X: {}\tY: {}", sMousePos.x, sMousePos.y);
+                onMouseMove();
+                // NC_LOG_INFO("Mouse position X: {}\tY: {}", sMousePos.x, sMousePos.y);
             ImVec2 endPos = { scenePos.x + sWidth, scenePos.y + sHeight };
             ImVec2 uv0    = { 0, 1 };
             ImVec2 uv1    = { 1, 0 };
