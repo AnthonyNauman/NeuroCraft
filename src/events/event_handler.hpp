@@ -1,13 +1,21 @@
 #pragma once
 
-namespace events{
+namespace events {
 
-    template<typename ...TParams>
+    template<typename... TParams>
     class AbstractEventHandler
     {
-        public:
-            virtual void call(TParams... params) = 0;
-        protected:
-            AbstractEventHandler() {}
+        using EventHandler = AbstractEventHandler<TParams...>;
+
+    public:
+        virtual void call(TParams... params) = 0;
+
+        bool operator==(const EventHandler& other) const { return isEquals(other); }
+
+        bool operator!=(const EventHandler& other) const { return !(*this == other); }
+
+    protected:
+        AbstractEventHandler() {}
+        virtual bool isEquals(const EventHandler& other) const = 0;
     };
 }

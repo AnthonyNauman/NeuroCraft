@@ -12,7 +12,8 @@ BraceWrapping:
   AfterNamespace: false 
   AfterExternBlock: false
   SplitEmptyFunction: false 
-  AfterFunction: true 
+  AfterFunction: true
+  BeforeLambdaBody: true 
   BeforeCatch: false 
   BeforeElse: false 
   BeforeWhile: false 
@@ -44,4 +45,4 @@ AlwaysBreakAfterReturnType: None
 SpaceBeforeRangeBasedForLoopColon: true
 
 PointerAlignment : Left 
-ColumnLimit : 140
+ColumnLimit : 0
