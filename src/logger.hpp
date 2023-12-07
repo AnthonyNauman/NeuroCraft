@@ -62,11 +62,10 @@ namespace nc {
         Logger& operator=(const Logger&) = delete;
         Logger& operator=(Logger&&) = delete;
 
-        void operator<<(std::string msg);
+        Logger& operator<<(std::string msg);
 
         void    setLogLevel(int);
         void    addVisibleCategories(std::string);
-        void    log(std::string category, LogLevels level, std::string msg);
         Logger& logStream(std::string category, LogLevels level);
 
     private:

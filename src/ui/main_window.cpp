@@ -145,10 +145,13 @@ namespace nc {
             // clang-format on
 
             ImVec2 sMousePos = { mPos.x - scenePos.x, mPos.y - scenePos.y };
-            // if (bMouseOnScene)
-            // NC_LOG_INFO("Mouse position X: {}\tY: {}", sMousePos.x, sMousePos.y);
-            //!\todo убрать потом
-            // "Пример нового логирования" NC_LOG(consts::logCategory::APP, LogLevels::INFO)<<("dvigaetso");
+            if (bMouseOnScene) {
+                //!\todo убрать потом "Пример нового логирования"
+                // NC_LOG(consts::logCategory::APP, LogLevels::DEBUG)<<("dvigaetso");
+                // NC_LOG("Util", LogLevels::CRITICAL) << "krodetso" << "bistro" << "mimo";
+                // NC_LOG("Sample", LogLevels::CRITICAL)<<("polzaet");
+                // NC_LOG("Sample2", LogLevels::CRITICAL)<<("polzaet2");
+            }
             ImVec2 endPos = { scenePos.x + sWidth, scenePos.y + sHeight };
             ImVec2 uv0    = { 0, 1 };
             ImVec2 uv1    = { 1, 0 };

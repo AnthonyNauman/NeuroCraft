@@ -20,17 +20,13 @@ namespace nc {
             logs.flush();
             logs.close();
         }
+
         auto logger = spdlog::basic_logger_mt("logger", logPath);
     }
 
     void Logger::setLogLevel(int level) { m_logLevel = static_cast<LogLevels>(level); }
 
     void Logger::addVisibleCategories(std::string category) { m_visibleCategories.insert(category); }
-
-    void Logger::log(std::string category, LogLevels level, std::string msg)
-    {
-        spdlog::log(static_cast<spdlog::level::level_enum>(level), msg);
-    }
 
     Logger& Logger::logStream(std::string category, LogLevels level)
     {
@@ -39,7 +35,7 @@ namespace nc {
         return *this;
     }
 
-    void Logger::operator<<(std::string msg)
+    Logger& Logger::operator<<(std::string msg)
     {
         std::string logPath = "logs/log";
         if (!std::filesystem::exists(std::filesystem::path("logs"))) {
@@ -55,11 +51,24 @@ namespace nc {
             }
         }
 
+        if (!m_visibleCategories.empty()) {
+            if (m_visibleCategories.find(m_currentCategoty) == m_visibleCategories.end()) {
+                return *this;
+            }
+        }
+
         std::string spdMsg = "[" + m_currentCategoty + "] " + msg;
-        auto        logger = spdlog::get("logger");
-        logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v");
+
+        //!\todo перенести set_pattern и set_level в конструктор (тупой перенос вызовов не сработал)
+        auto logger = spdlog::get("logger");
         logger->log(static_cast<spdlog::level::level_enum>(m_currentLevel), spdMsg);
+        logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v");
+        logger->set_level(static_cast<spdlog::level::level_enum>(m_logLevel));
         logger->flush();
-        log(m_currentCategoty, m_currentLevel, spdMsg);
+
+        spdlog::set_level(static_cast<spdlog::level::level_enum>(m_logLevel));
+        spdlog::log(static_cast<spdlog::level::level_enum>(m_currentLevel), spdMsg);
+
+        return *this;
     }
 }
