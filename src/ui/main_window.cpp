@@ -5,7 +5,7 @@
 #include "iostream"
 
 #include "../libs/glad/include/glad/glad.h"
-#include "../logger.hpp"
+#include "../logger/logger.hpp"
 #include "../utils.hpp"
 #include "GLFW/glfw3.h"
 #include <algorithm>
@@ -71,7 +71,7 @@ namespace nc {
         glfwMakeContextCurrent(m_glWindow);
         // Create window with graphics context
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-            NC_LOG_CRIT("Can't init Glad");
+            NC_LOG("MainWindow", LogLevels::ERR) << "Can't init Glad";
         }
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
@@ -126,7 +126,6 @@ namespace nc {
         double cursorY;
         glfwGetCursorPos(m_glWindow, &cursorX, &cursorY);
         // Poll and handle events (inputs, window resize, etc.)
-        // NC_LOG_INFO("Cursor position X: {}\tY: {}", cursorX, cursorY);
         glfwPollEvents();
 
         m_frameBuffer->setColor(0.1f, 0.2f, 0.4f, 1.f);
@@ -145,10 +144,13 @@ namespace nc {
             // clang-format on
 
             ImVec2 sMousePos = { mPos.x - scenePos.x, mPos.y - scenePos.y };
-            if (bMouseOnScene) {
+            if (bMouseOnScene) 
+            {
                 //!\todo убрать потом "Пример нового логирования"
-                // NC_LOG(consts::logCategory::APP, LogLevels::DEBUG)<<("dvigaetso");
-                // NC_LOG("Util", LogLevels::CRITICAL) << "krodetso" << "bistro" << "mimo";
+                NC_LOG(consts::logCategory::APP, LogLevels::DEBUG)<<"dvigaetso";
+             
+                // LogStream ls ("lskjdf", LogLevels::INFO);
+                // ls  << "krodetso" << "bistro" << "mimo";
                 // NC_LOG("Sample", LogLevels::CRITICAL)<<("polzaet");
                 // NC_LOG("Sample2", LogLevels::CRITICAL)<<("polzaet2");
             }

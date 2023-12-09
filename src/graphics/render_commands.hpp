@@ -4,8 +4,8 @@
 #include "mesh.hpp"
 #include "shader.hpp"
 #include <glad/include/glad/glad.h>
+#include "../logger/logger.hpp"
 #include <memory>
-#include <spdlog/include/spdlog/spdlog.h>
 
 namespace nc::managers {
     class RenderManager;

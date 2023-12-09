@@ -1,4 +1,4 @@
-#include "../logger.hpp"
+#include "../logger/logger.hpp"
 #include "frame_buffer.hpp"
 #include <glad/include/glad/glad.h>
 #include <stdint.h>
@@ -35,7 +35,7 @@ namespace nc::graphics {
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-            NC_LOG_ERROR("[_createFrameBuffer] framebuffer is not complete!!!");
+            NC_LOG("FrameBuffer", LogLevels::CRITICAL) << "[_createFrameBuffer] framebuffer is not complete!!!";
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

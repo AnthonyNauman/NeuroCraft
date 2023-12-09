@@ -45,7 +45,7 @@ namespace nc::graphics {
         glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(vs, 512, nullptr, glLog);
-            NC_LOG_ERROR(glLog);
+            NC_LOG("Shader", LogLevels::ERR) << glLog;
         }
         fs = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fs, 1, &fCode, nullptr);
@@ -54,7 +54,7 @@ namespace nc::graphics {
         glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(fs, 512, nullptr, glLog);
-            NC_LOG_ERROR(glLog);
+            NC_LOG("Shader", LogLevels::ERR) << glLog;
         }
 
         m_programId = glCreateProgram();
@@ -65,7 +65,7 @@ namespace nc::graphics {
         glGetProgramiv(m_programId, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(m_programId, 512, nullptr, glLog);
-            NC_LOG_ERROR(glLog);
+            NC_LOG("Shader", LogLevels::ERR) << glLog;
             glDeleteProgram(m_programId);
         }
         glDeleteShader(vs);

@@ -1,11 +1,13 @@
 #include "app.hpp"
-#include "logger.hpp"
+#include "logger/logger.hpp"
 
 namespace nc {
 
+    LogStruct LOGSTRCT = {};
+
     App::App()
-    { /*NC_LOG_INFO("App created");*/
-        NC_LOG("Application", LogLevels::INFO) << "App created";
+    {
+       NC_LOG(nc::consts::logCategory::APP, LogLevels::INFO) << "App created";
     }
 
     int App::exec()
@@ -14,7 +16,7 @@ namespace nc {
         m_mainWindow         = std::make_unique<MainWindow>(1600, 800, projName);
         int errorCode        = m_mainWindow->init();
         if (errorCode) {
-            NC_LOG_ERROR("Cant init main window!");
+            NC_LOG(nc::consts::logCategory::APP, LogLevels::ERR) <<"Cant init main window!";
             return -1;
         }
 
@@ -62,16 +64,16 @@ namespace nc {
                     return;
                 }
             }
-            auto logger = nc::Logger::getInstance();
 
             if (configJsonFile.contains("log")) {
                 if (configJsonFile["log"].contains("VisibleCategories")) {
                     for (auto category : configJsonFile["log"]["VisibleCategories"]) {
-                        logger->addVisibleCategories(static_cast<std::string>(category));
+                        std::string s = static_cast<std::string>(category);
+                        LOGSTRCT.addVisibleCategories(s);
                     }
                 }
                 if (configJsonFile["log"].contains("LogLevel")) {
-                    logger->setLogLevel(static_cast<int>(configJsonFile["log"]["LogLevel"]));
+                    LOGSTRCT.logLevel = static_cast<LogLevels>(configJsonFile["log"]["LogLevel"]);
                 }
             }
         }

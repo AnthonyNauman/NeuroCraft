@@ -1,9 +1,6 @@
 [submodule "libs/glfw"]
 	path = libs/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "libs/spdlog"]
-	path = libs/spdlog
-	url = https://github.com/gabime/spdlog.git
 [submodule "libs/imgui"]
 	path = libs/imgui
 	url = https://github.com/ocornut/imgui.git
@@ -19,3 +16,6 @@
 [submodule "libs/nlohmann_json"]
 	path = libs/nlohmann_json
 	url = git@github.com:nlohmann/json.git
+[submodule "libs/termcolor"]
+	path = libs/termcolor
+	url = git@github.com:AnthonyNauman/termcolor.git
