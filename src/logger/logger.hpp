@@ -1,17 +1,17 @@
 #pragma once
 
+#include "../../libs/termcolor/include/termcolor/termcolor.hpp"
 #include "../constants.hpp"
 #include "set"
-#include "../../libs/termcolor/include/termcolor/termcolor.hpp"
+#include <ctime>
 #include <filesystem>
 #include <fstream>
-#include <sstream>
-#include <iostream>
 #include <iomanip>
-#include <ctime>
+#include <iostream>
+#include <memory>
 #include <sstream>
 
-#define NC_LOG(...) nc::LogStream(__VA_ARGS__)
+#define NC_LOG(...) nc::Logger::GetInstance()->GetLogStream(__VA_ARGS__)
 
 namespace nc {
 #define NC_LEVEL_TRACE 0
@@ -35,52 +35,80 @@ namespace nc {
         log_levels
     };
 
-    struct LogStruct {
+    struct LogStruct
+    {
         std::set<std::string> visibleCategories;
         LogLevels             logLevel;
-        void addVisibleCategories(std::string cat)
+        void                  addVisibleCategories(std::string cat)
         {
-            if(!cat.empty())
+            if (!cat.empty())
                 visibleCategories.insert(cat);
         }
     };
-
 
     extern LogStruct LOGSTRCT;
 
     class LogStream
     {
-        public:
-            LogStream(std::string category, LogLevels level)
-            : m_currentCategoty(category)
-            , m_currentLevel(level)
-            {
-               operator<<("");
-            }
+    public:
+        LogStream(std::string category, LogLevels level)
+          : m_currentCategoty(category)
+          , m_currentLevel(level)
+        {}
 
-            ~LogStream()
-            {
-                flush();
-            }
+        ~LogStream() { flush(); }
 
-            template<class T>
-            LogStream& operator<<(const T& msg)
-            {
-                buffer() << msg;
-                return *this;
+        template<class T>
+        LogStream& operator<<(const T& msg)
+        {
+            buffer() << msg;
+            return *this;
+        }
+
+    private:
+        std::ostringstream& buffer() { return m_buffer; }
+        void                log();
+        void                flush();
+        void                logToFile();
+        std::string         logLevelStr();
+        std::string         nowTimeStr();
+
+    private:
+        std::ostringstream m_buffer;
+        std::string        m_currentCategoty;
+        LogLevels          m_currentLevel;
+    };
+
+    class Logger
+    {
+    private:
+        Logger()
+        {
+            std::string logPath = "logs/log.log";
+            if (!std::filesystem::exists(std::filesystem::path("logs"))) {
+                std::filesystem::create_directory(std::filesystem::path("logs"));
             }
-        
-    private:
-        std::ostringstream& buffer() {return m_buffer;}
-        void log();
-        void flush();
-        void logToFile();
-        std::string logLevelStr();
-        std::string nowTimeStr();
-    private:
-       
-        std::ostringstream    m_buffer;
-        std::string m_currentCategoty;
-        LogLevels   m_currentLevel;
+            std::ofstream logs;
+            logs.open(logPath);
+            if (logs.is_open()) {
+                logs.close();
+            }
+        };
+
+    public:
+        static std::shared_ptr<Logger> GetInstance()
+        {
+            static std::shared_ptr<Logger> logger{ new Logger() };
+            return logger;
+        }
+
+        Logger(Logger& other)  = delete;
+        Logger(Logger&& other) = delete;
+        Logger& operator=(Logger& other) = delete;
+        Logger& operator=(Logger&& other) = delete;
+
+        ~Logger(){};
+
+        LogStream GetLogStream(std::string category, LogLevels level);
     };
 }
