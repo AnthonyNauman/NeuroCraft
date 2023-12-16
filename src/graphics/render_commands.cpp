@@ -24,7 +24,7 @@ namespace nc::graphics::renderCommands {
             shader->unbind();
 
         } else
-            NC_LOG_ERROR("Execution of RenderMesh with invalid data!");
+            NC_LOG("RenderMesh", LogLevels::WARN) << "Execution of RenderMesh with invalid data!";
     }
 
     void PushFrameBuffer::execute()
@@ -33,7 +33,7 @@ namespace nc::graphics::renderCommands {
         if (fb) {
             m_renderManager.pushFrameBuffer(fb);
         } else
-            NC_LOG_WARN("Execution of PushFrameBuffer with invalid data!");
+            NC_LOG("PushFrameBuffer", LogLevels::WARN) <<"Execution of PushFrameBuffer with invalid data!";
     }
 
     void PopFrameBuffer::execute() { m_renderManager.popFrameBuffer(); }

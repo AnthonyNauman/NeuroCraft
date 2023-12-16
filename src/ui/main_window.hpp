@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "../camera/camera_controller.hpp"
 #include "../graphics/frame_buffer.hpp"
@@ -12,6 +13,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_opengl3_loader.h>
 #include <imgui.h>
+#include <stdint.h>
 
 #include <GLFW/glfw3.h>
 #define GL_SILENCE_DEPRECATION

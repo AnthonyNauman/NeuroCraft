@@ -1,8 +1,13 @@
 #pragma once
+#include <filesystem>
+#include <fstream>
 #include <memory>
 #include <string>
 
+#include "../libs/nlohmann_json/include/nlohmann/json.hpp"
 #include "ui/main_window.hpp"
+
+using json = nlohmann::json;
 
 namespace nc {
 
@@ -27,6 +32,7 @@ namespace nc {
         App& operator=(App&&) = delete;
 
     private:
+        void                        initConfig();
         std::unique_ptr<MainWindow> m_mainWindow;
     };
 }

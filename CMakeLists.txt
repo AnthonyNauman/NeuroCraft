@@ -13,7 +13,7 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 set(NEURO_CRAFT_PUBLIC_INCLUDES 
         src/app.hpp
-        src/logger.hpp
+        src/logger/logger.hpp
         src/ui/main_window.hpp
         src/camera/camera.hpp
         src/camera/camera_controller.hpp
@@ -22,6 +22,7 @@ set(NEURO_CRAFT_PUBLIC_INCLUDES
 
 set(NEURO_CRAFT_PUBLIC_SOURCES
         src/app.cpp
+        src/logger/logger.cpp
         src/ui/main_window.cpp
         src/camera/camera.cpp
         src/camera/camera_controller.cpp
@@ -80,23 +81,24 @@ target_include_directories(imgui_static PUBLIC libs)
 target_include_directories(imgui_static PUBLIC libs/imgui)
 target_include_directories(graphics_static PUBLIC libs)
 target_include_directories(graphics_static PUBLIC libs/imgui)
-target_include_directories(graphics_static PUBLIC libs/spdlog)
 target_include_directories(graphics_static PUBLIC libs/glm)
 
 add_executable(${PROJECT_NAME} src/main.cpp )
 
 add_subdirectory(libs/glfw ${CMAKE_CURRENT_BINARY_DIR}/libs/glfw)
-add_subdirectory(libs/spdlog ${CMAKE_CURRENT_BINARY_DIR}/libs/spdlog)
+add_subdirectory(libs/nlohmann_json ${CMAKE_CURRENT_BINARY_DIR}/libs/nlohmann_json)
 add_subdirectory(libs/glad ${CMAKE_CURRENT_BINARY_DIR}/libs/glad)
 add_subdirectory(libs/glm ${CMAKE_CURRENT_BINARY_DIR}/libs/glm)
+add_subdirectory(libs/termcolor ${CMAKE_CURRENT_BINARY_DIR}/libs/termcolor)
 target_link_libraries(imgui_static PRIVATE glad glfw)
-target_link_libraries(graphics_static PRIVATE glad glfw spdlog glm)
+target_link_libraries(graphics_static PRIVATE glad glfw glm)
 target_link_libraries(neuro_craft_static PUBLIC 
             glfw
-            spdlog
+            nlohmann_json
             glad
             imgui_static
             graphics_static
+            termcolor
             glm
 )
 

@@ -1,4 +1,4 @@
-#include "../logger.hpp"
+#include "../logger/logger.hpp"
 #include "render_manager.hpp"
 #include <algorithm>
 #include <glad/include/glad/glad.h>
@@ -8,10 +8,10 @@ namespace nc::managers {
 
     void RenderManager::init()
     {
-        NC_LOG_INFO("OpenGL info:\n  Vendor:\t{}\n  Renderer:\t{}\n  Version:\t{}\n",
-                    reinterpret_cast<const char*>(glGetString(GL_VENDOR)),
-                    reinterpret_cast<const char*>(glGetString(GL_RENDERER)),
-                    reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+        NC_LOG("RenderManager", LogLevels::INFO) << "OpenGL info:\n  Vendor:\t{}\n  Renderer:\t{}\n  Version:\t{}\n"
+                  <<  reinterpret_cast<const char*>(glGetString(GL_VENDOR))
+                 <<   reinterpret_cast<const char*>(glGetString(GL_RENDERER))
+                  <<  reinterpret_cast<const char*>(glGetString(GL_VERSION));
 
         // glEnable(GL_DEPTH_TEST);
         // glDepthFunc(GL_LEQUAL);
